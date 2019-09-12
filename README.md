@@ -8,7 +8,7 @@ A tool to unpack &amp; repack Nintendo DS roms (.nds)
 
 If you find this software useful, please [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Z8Z511SOI)
 
-![screenshot]()
+![screenshot](https://raw.githubusercontent.com/Luca1991/NDSFactory/master/screenshot.png)
 
 **!!!ROM WITH OVERLAY ARE CURRENTLY NOT SUPPORTED!!!**
 
