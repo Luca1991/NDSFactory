@@ -59,5 +59,6 @@ you can use in the packing process.
 
 If you found a bug, feel free to open an issue or send a PR :)
 
-### Developed with ❤ by Luca D'Amico - Special thanks to Antonio Barba & Davide Trogu
+### Developed with ❤ by Luca D'Amico
+### Special thanks to Antonio Barba & Davide Trogu
 
