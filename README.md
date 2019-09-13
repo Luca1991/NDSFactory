@@ -50,7 +50,7 @@ Patching the FAT is easy, all you have to do is load your fat.bin, and fill the 
 you can use in the packing process.
 
 
-# Know Limitations/Possible Future Featurs/Bugs
+# Know Limitations/Possible Future Features/Bugs
 
 * Add support for roms with OVERLAY
 * Add support to decode FAT Files (extract single files one by one)
