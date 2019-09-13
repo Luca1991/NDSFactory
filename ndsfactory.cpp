@@ -17,7 +17,7 @@ bool NDSFactory::loadRomHeader(const std::string& romPath, std::vector<char>& ro
     std::ifstream romFile (romPath, std::ios::in|std::ios::binary|std::ios::ate);
     if (romFile.is_open())
     {
-        romHeader.resize(static_cast<ulong>(headerSize));
+        romHeader.resize(static_cast<unsigned long>(headerSize));
 
         romFile.seekg (0, std::ios::beg);
         romFile.read (romHeader.data(), headerSize);
@@ -128,7 +128,7 @@ bool NDSFactory::patchFat(const std::string& fatSectionPath, uint32_t shiftSize,
         return false;
 
     long sectionSize = sectionFile.tellg();
-    fatBytes.resize(static_cast<ulong>(sectionSize));
+    fatBytes.resize(static_cast<unsigned long>(sectionSize));
 
     sectionFile.seekg (0, std::ios::beg);
 
