@@ -21,6 +21,7 @@ public:
     int getCardSizeInBytes(int cardType);
     bool checkArm9FooterPresence(const std::string& sectionPath, uint32_t size);
     bool patchFat(const std::string& sectionPath, uint32_t shiftSize, const std::string& savePath);
+    uint16_t calcHeaderCrc16(const std::vector<char>& romHeader);
 
 private:
 

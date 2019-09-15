@@ -1627,6 +1627,13 @@
               </spacer>
              </item>
              <item>
+              <widget class="QPushButton" name="packerCalcHeaderCrcBtn">
+               <property name="text">
+                <string>Calc Header CRC</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QPushButton" name="packerLoadHeaderBtn">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">

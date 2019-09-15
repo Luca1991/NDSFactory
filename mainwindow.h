@@ -54,6 +54,8 @@ private slots:
 
     void on_fatPatchingPatchFatBtn_clicked();
 
+    void on_packerCalcHeaderCrcBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
     NDSFactory ndsFactory;
@@ -74,7 +76,9 @@ private:
     bool dumpEverything(QString dirPath);
 
     void populatePackerSectionHeader(NDSHeader *ndsHeader);
+    void generateHeader(NDSHeader* pRomHeader);
     bool writeHeader(const std::string& savePath);
+    void calcHeaderCrc16();
     bool writeArm9Bin(const std::string& savePath, bool isArm9FooterPresent);
     bool writeArm7Bin(const std::string& savePath);
     bool writeFnt(const std::string& savePath);

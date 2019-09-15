@@ -58,12 +58,8 @@ void MainWindow::populatePackerSectionHeader(NDSHeader *ndsHeader)
     ui->packerDebugRamAddrEdt->setText(QString::number(ndsHeader->DebugRamAddr, 16));
 }
 
-
-bool MainWindow::writeHeader(const std::string& savePath)
+void MainWindow::generateHeader(NDSHeader* pRomHeader)
 {
-    std::vector<char> romHeader(sizeof(NDSHeader));
-    NDSHeader* pRomHeader = reinterpret_cast<NDSHeader*>(romHeader.data());
-
     std::copy_n(ui->packerGameTitleEdt->text().toLatin1().data(), 0xc, std::begin(pRomHeader->GameTitle));
     std::copy_n(ui->packerGameCodeEdt->text().toStdString().data(), 0x4, std::begin(pRomHeader->GameCode));
     std::copy_n(ui->packerMakerCodeEdt->text().toStdString().data(), 0x2, std::begin(pRomHeader->MakerCode));
@@ -121,8 +117,28 @@ bool MainWindow::writeHeader(const std::string& savePath)
 
     std::fill(std::begin(pRomHeader->Reserved3), std::end(pRomHeader->Reserved3), 0);
     std::fill(std::begin(pRomHeader->Reserved4), std::end(pRomHeader->Reserved4), 0);
+}
+
+
+bool MainWindow::writeHeader(const std::string& savePath)
+{
+    std::vector<char> romHeader(sizeof(NDSHeader));
+    NDSHeader* pRomHeader = reinterpret_cast<NDSHeader*>(romHeader.data());
+
+    generateHeader(pRomHeader);
 
     return ndsFactory.writeBytesToFile(romHeader, savePath, 0, sizeof(NDSHeader));;
+}
+
+void MainWindow::calcHeaderCrc16()
+{
+    std::vector<char> romHeader(sizeof(NDSHeader));
+    NDSHeader* pRomHeader = reinterpret_cast<NDSHeader*>(romHeader.data());
+
+    generateHeader(pRomHeader);
+
+    ui->packerHeaderCRCEdt->setText(QString::number(ndsFactory.calcHeaderCrc16(romHeader), 16));
+
 }
 
 bool MainWindow::writeArm9Bin(const std::string& savePath, bool isArm9FooterPresent)
@@ -308,7 +324,6 @@ bool MainWindow::writeRomPadding(const std::string& savePath)
                  startAddr,
                  size);
 }
-
 
 bool MainWindow::writeEverything(const std::string& savePath)
 {

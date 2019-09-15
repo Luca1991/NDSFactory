@@ -183,3 +183,8 @@ void MainWindow::on_packerBuildNDSRomBtn_clicked()
     }
 }
 
+
+void MainWindow::on_packerCalcHeaderCrcBtn_clicked()
+{
+    calcHeaderCrc16();
+}

@@ -4,6 +4,7 @@
 #include <cmath>
 #include "ndsfactory.h"
 #include "fatstruct.h"
+#include "crctable.h"
 
 
 NDSFactory::NDSFactory()
@@ -144,4 +145,22 @@ bool NDSFactory::patchFat(const std::string& fatSectionPath, uint32_t shiftSize,
     }
 
     return writeBytesToFile(fatBytes, savePath, 0, static_cast<uint32_t>(sectionSize));
+}
+
+uint16_t NDSFactory::calcHeaderCrc16(const std::vector<char>& romHeader)
+{
+    uint8_t loc;
+    uint16_t crc = 0xFFFF;
+    size_t size = 0x15E;
+    size_t index = 0;
+
+   while (size--)
+   {
+       loc = static_cast<unsigned char>(romHeader[index] ^ crc);
+       index++;
+       crc >>= 8;
+       crc ^= lCRCTable[loc];
+   }
+   return crc;
+
 }

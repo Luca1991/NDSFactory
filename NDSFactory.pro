@@ -41,7 +41,8 @@ HEADERS += \
     ndsheader.h \
     ndsfactory.h \
     aboutdialog.h \
-    fatstruct.h
+    fatstruct.h \
+    crctable.h
 
 FORMS += \
         mainwindow.ui \
