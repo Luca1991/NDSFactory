@@ -3,7 +3,6 @@
 #include <cstring>
 #include <sstream>
 #include <iomanip>
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -219,4 +218,5 @@ bool MainWindow::dumpEverything(QString dirPath)
 bool MainWindow::decodeFatFiles()
 {
     // TODO: implement me!
+    return false;
 }
