@@ -10,7 +10,7 @@ If you find this software useful, please [![ko-fi](https://www.ko-fi.com/img/git
 
 ![screenshot](https://raw.githubusercontent.com/Luca1991/NDSFactory/master/screenshot.png)
 
-**!!!ROM WITH OVERLAY ARE CURRENTLY NOT SUPPORTED!!!**
+**!!!ROMS WITH OVERLAY ARE CURRENTLY NOT SUPPORTED!!!**
 
 # Description
 
@@ -50,7 +50,7 @@ Patching the FAT is easy, all you have to do is load your fat.bin, and fill the 
 you can use in the packing process.
 
 
-# Know Limitations/Possible Future Features/Bugs
+# Known Limitations/Possible Future Features/Bugs
 
 * Add support for roms with OVERLAY
 * Add support to decode FAT Files (extract single files one by one)
