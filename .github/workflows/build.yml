@@ -28,5 +28,4 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       run: |
-        cd build
         make -j4
