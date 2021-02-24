@@ -16,12 +16,12 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential qt5-default cmake
+        mkdir build
 
     - name: Configure CMake
+      working-directory: ${{github.workspace}}/build
       shell: bash
       run: |
-        mkdir build
-        cd build
         cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
 
     - name: Build
@@ -29,3 +29,16 @@ jobs:
       shell: bash
       run: |
         make -j4
+        
+    - name: Archive Artifact
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: |
+        tar -czvf NDSFactory_`date +%Y%m%d`__Linux_x86_64.tar.gz NDSFactory ../README.md ../LICENSE
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Linux
+        path: build/NDSFactory_*__Linux_x86_64.tar.gz
+        if-no-files-found: error
