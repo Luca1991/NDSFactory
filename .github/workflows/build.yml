@@ -76,6 +76,7 @@ jobs:
       shell: bash
       run: |
         zip -r NDSFactory_`date +%Y%m%d`__macOS_x86_64.zip NDSFactory.app ../README.md ../LICENSE
+        ls -la
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
