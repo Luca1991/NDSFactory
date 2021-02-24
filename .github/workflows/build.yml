@@ -50,7 +50,10 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2 lukka/get-cmake@latest
+      uses: jurplel/install-qt-action@v2
+      
+    - name: Install CMake
+      uses: lukka/get-cmake@latest
       
 
     - name: Create Build Environment
