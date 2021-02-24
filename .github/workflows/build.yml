@@ -75,7 +75,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       run: |
-        zip -r NDSFactory_`date +%Y%m%d`__macOS_x86_64.zip NDSFactory.app ../README.md ../LICENSE
+        zip -r NDSFactory_`date +%Y%m%d`__macOS_x86_64.zip NDSFactory ../README.md ../LICENSE
         ls -la
 
     - name: Upload Artifact
