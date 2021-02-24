@@ -42,3 +42,32 @@ jobs:
         name: Linux
         path: build/NDSFactory_*__Linux_x86_64.tar.gz
         if-no-files-found: error
+        
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2 lukka/get-cmake@latest
+      
+
+    - name: Create Build Environment
+      run: |
+        mkdir build
+        
+    - name: Configure CMake
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+
+    - name: Build
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: |
+        make -j4
+             
+        
+  
