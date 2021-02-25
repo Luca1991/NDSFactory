@@ -42,10 +42,12 @@ jobs:
         make -j4
         
     - name: Archive Artifact
-      working-directory: ${{github.workspace}}/build
+      working-directory: ${{github.workspace}}
       shell: bash
       run: |
-        tar -czvf NDSFactory_`date +%Y%m%d`__Linux_x86_64.tar.gz NDSFactory ../README.md ../LICENSE
+        git_hash=$(git rev-parse --short "$GITHUB_SHA")
+        cd build
+        tar -czvf NDSFactory_${git_hash}__Linux_x86_64.tar.gz NDSFactory ../README.md ../LICENSE
 
     - name: Release on GitHub
       uses: ncipollo/release-action@v1
@@ -85,10 +87,12 @@ jobs:
         macdeployqt NDSFactory.app
         
     - name: Archive Artifact
-      working-directory: ${{github.workspace}}/build
+      working-directory: ${{github.workspace}}
       shell: bash
       run: |
-        zip -r NDSFactory_`date +%Y%m%d`__macOS_x86_64.zip NDSFactory.app ../README.md ../LICENSE
+        git_hash=$(git rev-parse --short "$GITHUB_SHA")
+        cd build
+        zip -r NDSFactory_${git_hash}__macOS_x86_64.zip NDSFactory.app ../README.md ../LICENSE
 
     - name: Release on GitHub
       uses: ncipollo/release-action@v1
