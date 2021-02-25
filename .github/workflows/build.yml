@@ -36,12 +36,13 @@ jobs:
       run: |
         tar -czvf NDSFactory_`date +%Y%m%d`__Linux_x86_64.tar.gz NDSFactory ../README.md ../LICENSE
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
+    - name: Release on GitHub
+      uses: ncipollo/release-action@v1
       with:
-        name: Linux
-        path: build/NDSFactory_*__Linux_x86_64.tar.gz
-        if-no-files-found: error
+        artifacts: "build/NDSFactory_*__Linux_x86_64.tar.gz"
+        allowUpdates: true
+        tag: "autobuild"
+        token: ${{ secrets.GITHUB_TOKEN }}
         
   build-macos:
     runs-on: macos-latest
@@ -78,9 +79,10 @@ jobs:
       run: |
         zip -r NDSFactory_`date +%Y%m%d`__macOS_x86_64.zip NDSFactory.app ../README.md ../LICENSE
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
+    - name: Release on GitHub
+      uses: ncipollo/release-action@v1
       with:
-        name: macOS
-        path: build/NDSFactory_*__macOS_x86_64.zip
-        if-no-files-found: error
+        artifacts: "build/NDSFactory_*__macOS_x86_64.zip"
+        allowUpdates: true
+        tag: "autobuild"
+        token: ${{ secrets.GITHUB_TOKEN }}
