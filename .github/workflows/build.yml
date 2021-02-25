@@ -42,3 +42,45 @@ jobs:
         name: Linux
         path: build/NDSFactory_*__Linux_x86_64.tar.gz
         if-no-files-found: error
+        
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      
+    - name: Install CMake
+      uses: lukka/get-cmake@latest
+
+    - name: Create Build Environment
+      run: |
+        mkdir build
+        
+    - name: Configure CMake
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+
+    - name: Build
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: |
+        make -j4
+        macdeployqt NDSFactory.app
+        
+    - name: Archive Artifact
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: |
+        zip -r NDSFactory_`date +%Y%m%d`__macOS_x86_64.zip NDSFactory.app ../README.md ../LICENSE
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: macOS
+        path: build/NDSFactory_*__macOS_x86_64.zip
+        if-no-files-found: error
