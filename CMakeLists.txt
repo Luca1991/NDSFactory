@@ -37,6 +37,10 @@ set(FORMS
     aboutdialog.ui
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${FORMS})
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${FORMS})
+else()
+    add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${FORMS})
+endif()
 
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)
