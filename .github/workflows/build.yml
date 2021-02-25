@@ -40,6 +40,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: "build/NDSFactory_*__Linux_x86_64.tar.gz"
+        allowUpdates: true
         tag: "autobuild"
         token: ${{ secrets.GITHUB_TOKEN }}
         
@@ -82,5 +83,6 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: "build/NDSFactory_*__macOS_x86_64.zip"
+        allowUpdates: true
         tag: "autobuild"
         token: ${{ secrets.GITHUB_TOKEN }}
