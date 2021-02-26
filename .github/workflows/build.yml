@@ -1,6 +1,8 @@
 name: NDSFactory-Builds
 
-on: [push]
+on:
+  push:
+    branches: master
 
 env:
   BUILD_TYPE: Release
@@ -16,6 +18,86 @@ jobs:
         tag_name: autobuild
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Create Build Environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential qt5-default cmake
+        mkdir build
+    - name: Configure CMake
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+    - name: Build
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: |
+        make -j4
+        
+    - name: Archive Artifact
+      working-directory: ${{github.workspace}}
+      shell: bash
+      run: |
+        git_hash=$(git rev-parse --short "$GITHUB_SHA")
+        cd build
+        tar -czvf NDSFactory_${git_hash}__Linux_x86_64.tar.gz NDSFactory ../README.md ../LICENSE
+    - name: Release on GitHub
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "build/NDSFactory_*__Linux_x86_64.tar.gz"
+        allowUpdates: true
+        tag: "autobuild"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      
+    - name: Install CMake
+      uses: lukka/get-cmake@latest
+
+    - name: Create Build Environment
+      run: |
+        mkdir build
+        
+    - name: Configure CMake
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+    - name: Build
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: |
+        make -j4
+        macdeployqt NDSFactory.app
+        
+    - name: Archive Artifact
+      working-directory: ${{github.workspace}}
+      shell: bash
+      run: |
+        git_hash=$(git rev-parse --short "$GITHUB_SHA")
+        cd build
+        zip -r NDSFactory_${git_hash}__macOS_x86_64.zip NDSFactory.app ../README.md ../LICENSE
+    - name: Release on GitHub
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "build/NDSFactory_*__macOS_x86_64.zip"
+        allowUpdates: true
+        tag: "autobuild"
+        token: ${{ secrets.GITHUB_TOKEN }}
 
   build-windows:
     runs-on: windows-latest
