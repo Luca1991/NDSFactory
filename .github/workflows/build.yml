@@ -42,7 +42,9 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         cmake --build . -j4 --config Release
+        dir
         windeployqt .\Release\NDSFactory.exe
+        dir
         
     - name: Archive Artifact
       working-directory: ${{github.workspace}}/build/Release
@@ -52,7 +54,7 @@ jobs:
         xcopy ..\..\README.md .\prod
         xcopy ..\..\LICENSE .\prod
         xcopy .\NDSFactory.exe .\prod
-        powershell "Compress-Archive -Path .\prod\*.* -DestinationPath .\NDSFactory_TEST__Windows_x86_64.zip"
+        powershell "Compress-Archive -Path .\prod\* -DestinationPath .\NDSFactory_TEST__Windows_x86_64.zip"
 
     - name: Release on GitHub
       uses: ncipollo/release-action@v1
