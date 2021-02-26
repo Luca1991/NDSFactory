@@ -101,3 +101,49 @@ jobs:
         allowUpdates: true
         tag: "autobuild"
         token: ${{ secrets.GITHUB_TOKEN }}
+        
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      
+    - name: Install CMake
+      uses: lukka/get-cmake@latest
+
+    - name: Create Build Environment
+      run: |
+        mkdir build
+        
+    - name: Configure CMake
+      working-directory: ${{github.workspace}}/build
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+
+    - name: Build
+      working-directory: ${{github.workspace}}/build
+      run: |
+        cmake --build . -j4
+        windeployqt NDSFactory.exe
+        
+    - name: Archive Artifact
+      working-directory: ${{github.workspace}}
+      run: |
+        git_hash=$(git rev-parse --short "$GITHUB_SHA")
+        cd build
+        mkdir release
+        cd release
+        xcopy ..\..\README.md .\
+        xcopy ..\..\LICENSE .\
+        powershell "Compress-Archive -Path .\release\*.* -DestinationPath .\NDSFactory_${git_hash}__Windows_x86_64.zip"
+
+    - name: Release on GitHub
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "build/NDSFactory_*__Windows_x86_64.zip"
+        allowUpdates: true
+        tag: "autobuild"
+        token: ${{ secrets.GITHUB_TOKEN }}
