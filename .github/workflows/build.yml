@@ -51,6 +51,7 @@ jobs:
         mkdir prod
         xcopy ..\..\README.md .\prod
         xcopy ..\..\LICENSE .\prod
+        xcopy .\NDSFactory.exe .\prod
         powershell "Compress-Archive -Path .\prod\*.* -DestinationPath .\NDSFactory_TEST__Windows_x86_64.zip"
 
     - name: Release on GitHub
