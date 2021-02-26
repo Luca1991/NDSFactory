@@ -42,9 +42,9 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         cmake --build . -j4 --config Release
-        dir
+        dir .\Release\
         windeployqt .\Release\NDSFactory.exe
-        dir
+        dir .\Release\
         
     - name: Archive Artifact
       working-directory: ${{github.workspace}}/build/Release
