@@ -49,14 +49,14 @@ jobs:
       run: |
         #git_hash=$(git rev-parse --short "$GITHUB_SHA")
         mkdir prod
-        xcopy ..\..\..\README.md .\prod
-        xcopy ..\..\..\LICENSE .\prod
+        xcopy ..\..\README.md .\prod
+        xcopy ..\..\LICENSE .\prod
         powershell "Compress-Archive -Path .\prod\*.* -DestinationPath .\NDSFactory_TEST__Windows_x86_64.zip"
 
     - name: Release on GitHub
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "build//Release/NDSFactory_*__Windows_x86_64.zip"
+        artifacts: "build/Release/NDSFactory_*__Windows_x86_64.zip"
         allowUpdates: true
         tag: "autobuild"
         token: ${{ secrets.GITHUB_TOKEN }}
