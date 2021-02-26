@@ -49,11 +49,10 @@ jobs:
     - name: Archive Artifact
       working-directory: ${{github.workspace}}/build/Release
       run: |
-        echo %GITHUB_SHA%
-        # git_hash=$(git rev-parse --short "$GITHUB_SHA")
+        echo "::set-output name=git_hash::$(git rev-parse --short HEAD)"
         xcopy ..\..\README.md .\prod
         xcopy ..\..\LICENSE .\prod
-        powershell "Compress-Archive -Path .\prod\* -DestinationPath .\NDSFactory_%GITHUB_SHA%__Windows_x86_64.zip"
+        powershell "Compress-Archive -Path .\prod\* -DestinationPath .\NDSFactory_${{git_hash}}__Windows_x86_64.zip"
 
     - name: Release on GitHub
       uses: ncipollo/release-action@v1
