@@ -39,6 +39,8 @@ set(FORMS
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${FORMS})
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS} ${FORMS})
 else()
     add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${FORMS})
 endif()
