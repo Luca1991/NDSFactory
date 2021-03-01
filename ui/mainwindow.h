@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <cstdint>
-#include "ndsfactory.h"
+#include "../ndsfactory/ndsfactory.h"
 
 
 namespace Ui {

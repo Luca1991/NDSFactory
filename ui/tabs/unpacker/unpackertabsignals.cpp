@@ -1,8 +1,8 @@
 #include <QFileDialog>
 #include <vector>
 #include <QMessageBox>
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "./../../mainwindow.h"
+#include "./../../ui_mainwindow.h"
 
 
 void MainWindow::on_loadRomBtn_clicked()

@@ -10,31 +10,35 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
+# Dialogs
+file(GLOB_RECURSE DIALOGS_HEADERS ui/dialogs/*.h)
+file(GLOB_RECURSE DIALOGS_SOURCES ui/dialogs/*.cpp)
+file(GLOB_RECURSE DIALOGS_UIS ui/dialogs/*.ui)
+
+# Tabs
+file(GLOB_RECURSE TABS_SOURCES ui/tabs/*.cpp)
+
+# NDSFactory
+file(GLOB_RECURSE NDSFACTORY_SOURCES ndsfactory/*.cpp)
+file(GLOB_RECURSE NDSFACTORY_HEADERS ndsfactory/*.h)
+
 set(SOURCES
     main.cpp
-    mainwindow.cpp
-    ndsfactory.cpp
-    aboutdialog.cpp
-    unpackertabfunctions.cpp
-    unpackertabsignals.cpp
-    packertabsignals.cpp
-    packertabfunctions.cpp
-    fatpatchingtabsignals.cpp
-    fatpatchingtabfunctions.cpp
+    ui/mainwindow.cpp
+    ${NDSFACTORY_SOURCES}
+    ${DIALOGS_SOURCES}
+    ${TABS_SOURCES}
 )
 
 SET(HEADERS
-    mainwindow.h
-    ndsheader.h
-    ndsfactory.h
-    aboutdialog.h
-    fatstruct.h
-    crctable.h
+    ui/mainwindow.h
+    ${NDSFACTORY_HEADERS}
+    ${DIALOGS_HEADERS}
 )
 
 set(FORMS
-    mainwindow.ui
-    aboutdialog.ui
+    ui/mainwindow.ui
+    ${DIALOGS_UIS}
 )
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")

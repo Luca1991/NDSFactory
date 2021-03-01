@@ -1,8 +1,8 @@
 #include <QDir>
 #include <cstring>
 #include <algorithm>
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "./../../mainwindow.h"
+#include "./../../ui_mainwindow.h"
 
 
 void MainWindow::populatePackerSectionHeader(NDSHeader *ndsHeader)

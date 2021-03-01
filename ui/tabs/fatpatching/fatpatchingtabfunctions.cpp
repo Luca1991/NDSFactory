@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "./../../mainwindow.h"
 
 
 bool MainWindow::patchFat(const std::string& loadPath, uint32_t shiftSize, const std::string& savePath)
