@@ -1,4 +1,0 @@
-/home/luca/Documenti/GitHub/NDSFactory/build/CMakeFiles/rebuild_cache.dir
-/home/luca/Documenti/GitHub/NDSFactory/build/CMakeFiles/edit_cache.dir
-/home/luca/Documenti/GitHub/NDSFactory/build/CMakeFiles/NDSFactory.dir
-/home/luca/Documenti/GitHub/NDSFactory/build/CMakeFiles/NDSFactory_autogen.dir
