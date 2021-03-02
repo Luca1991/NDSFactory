@@ -10,6 +10,22 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
+if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+  execute_process(
+    COMMAND git log -1 --format=%h
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_COMMIT_HASH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+else(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+  set(GIT_COMMIT_HASH "")
+endif(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+
+configure_file(
+  ${CMAKE_SOURCE_DIR}/ui/dialogs/about/revision.h.in
+  ${CMAKE_SOURCE_DIR}/ui/dialogs/about/revision.h
+)
+
 # Dialogs
 file(GLOB_RECURSE DIALOGS_HEADERS ui/dialogs/*.h)
 file(GLOB_RECURSE DIALOGS_SOURCES ui/dialogs/*.cpp)

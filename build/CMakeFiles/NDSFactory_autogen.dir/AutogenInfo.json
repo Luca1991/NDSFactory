@@ -1,0 +1,215 @@
+{
+	"BUILD_DIR" : "/home/luca/Documenti/GitHub/NDSFactory/build/NDSFactory_autogen",
+	"CMAKE_BINARY_DIR" : "/home/luca/Documenti/GitHub/NDSFactory/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/luca/Documenti/GitHub/NDSFactory/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/luca/Documenti/GitHub/NDSFactory",
+	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
+	"CMAKE_LIST_FILES" : 
+	[
+		"/home/luca/Documenti/GitHub/NDSFactory/CMakeLists.txt",
+		"/home/luca/Documenti/GitHub/NDSFactory/build/CMakeFiles/3.19.6/CMakeSystem.cmake",
+		"/usr/share/cmake-3.19/Modules/CMakeSystemSpecificInitialize.cmake",
+		"/home/luca/Documenti/GitHub/NDSFactory/build/CMakeFiles/3.19.6/CMakeCCompiler.cmake",
+		"/home/luca/Documenti/GitHub/NDSFactory/build/CMakeFiles/3.19.6/CMakeCXXCompiler.cmake",
+		"/usr/share/cmake-3.19/Modules/CMakeSystemSpecificInformation.cmake",
+		"/usr/share/cmake-3.19/Modules/CMakeGenericSystem.cmake",
+		"/usr/share/cmake-3.19/Modules/CMakeInitializeConfigs.cmake",
+		"/usr/share/cmake-3.19/Modules/Platform/Linux.cmake",
+		"/usr/share/cmake-3.19/Modules/Platform/UnixPaths.cmake",
+		"/usr/share/cmake-3.19/Modules/CMakeCInformation.cmake",
+		"/usr/share/cmake-3.19/Modules/CMakeLanguageInformation.cmake",
+		"/usr/share/cmake-3.19/Modules/Compiler/GNU-C.cmake",
+		"/usr/share/cmake-3.19/Modules/Compiler/GNU.cmake",
+		"/usr/share/cmake-3.19/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
+		"/usr/share/cmake-3.19/Modules/Platform/Linux-GNU-C.cmake",
+		"/usr/share/cmake-3.19/Modules/Platform/Linux-GNU.cmake",
+		"/usr/share/cmake-3.19/Modules/CMakeCommonLanguageInclude.cmake",
+		"/usr/share/cmake-3.19/Modules/CMakeCXXInformation.cmake",
+		"/usr/share/cmake-3.19/Modules/CMakeLanguageInformation.cmake",
+		"/usr/share/cmake-3.19/Modules/Compiler/GNU-CXX.cmake",
+		"/usr/share/cmake-3.19/Modules/Compiler/GNU.cmake",
+		"/usr/share/cmake-3.19/Modules/Platform/Linux-GNU-CXX.cmake",
+		"/usr/share/cmake-3.19/Modules/Platform/Linux-GNU.cmake",
+		"/usr/share/cmake-3.19/Modules/CMakeCommonLanguageInclude.cmake",
+		"/usr/lib64/cmake/Qt5Core/Qt5CoreConfigVersion.cmake",
+		"/usr/lib64/cmake/Qt5Core/Qt5CoreConfig.cmake",
+		"/usr/lib64/cmake/Qt5Core/Qt5CoreConfigExtras.cmake",
+		"/usr/lib64/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake",
+		"/usr/lib64/cmake/Qt5Core/Qt5CoreMacros.cmake",
+		"/usr/share/cmake-3.19/Modules/CMakeParseArguments.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5GuiConfig.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QComposePlatformInputContextPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSEmulatorIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSKmsEglDeviceIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSKmsGbmIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSX11IntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevKeyboardPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevMousePlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevTabletPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevTouchScreenPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QGtk3ThemePlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QIbusPlatformInputContextPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QLibInputPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QLinuxFbIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QMinimalEglIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QPdfPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QSvgIconPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QSvgPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QTsLibPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QVncIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandEglPlatformIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandXCompositeEglPlatformIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandXCompositeGlxPlatformIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbEglIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbGlxIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbIntegrationPlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5Gui_QXdgDesktopPortalThemePlugin.cmake",
+		"/usr/lib64/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake",
+		"/usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake",
+		"/usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake",
+		"/usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake",
+		"/usr/lib64/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake",
+		"/usr/share/cmake-3.19/Modules/CMakeParseArguments.cmake",
+		"/home/luca/Documenti/GitHub/NDSFactory/ui/dialogs/about/revision.h.in"
+	],
+	"CMAKE_SOURCE_DIR" : "/home/luca/Documenti/GitHub/NDSFactory",
+	"DEP_FILE" : "",
+	"DEP_FILE_RULE_NAME" : "",
+	"HEADERS" : 
+	[
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ndsfactory/crctable.h",
+			"MU",
+			"LVKJAUT7YU/moc_crctable.cpp"
+		],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ndsfactory/fatstruct.h",
+			"MU",
+			"LVKJAUT7YU/moc_fatstruct.cpp"
+		],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ndsfactory/ndsfactory.h",
+			"MU",
+			"LVKJAUT7YU/moc_ndsfactory.cpp"
+		],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ndsfactory/ndsheader.h",
+			"MU",
+			"LVKJAUT7YU/moc_ndsheader.cpp"
+		],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ui/dialogs/about/aboutdialog.h",
+			"MU",
+			"PDWMDKEQLE/moc_aboutdialog.cpp"
+		],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ui/dialogs/about/revision.h",
+			"MU",
+			"PDWMDKEQLE/moc_revision.cpp"
+		],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ui/mainwindow.h",
+			"MU",
+			"UYX5XTB5RZ/moc_mainwindow.cpp"
+		]
+	],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "/home/luca/Documenti/GitHub/NDSFactory/build/NDSFactory_autogen/include",
+	"MOC_COMPILATION_FILE" : "/home/luca/Documenti/GitHub/NDSFactory/build/NDSFactory_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : [ "QT_CORE_LIB", "QT_GUI_LIB", "QT_NO_DEBUG", "QT_WIDGETS_LIB" ],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"/usr/include/qt",
+		"/usr/include/qt/QtCore",
+		"/usr/lib/qt/mkspecs/linux-g++",
+		"/usr/include/qt/QtGui",
+		"/usr/include/qt/QtWidgets",
+		"/usr/include/c++/10.2.0",
+		"/usr/include/c++/10.2.0/x86_64-pc-linux-gnu",
+		"/usr/include/c++/10.2.0/backward",
+		"/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include",
+		"/usr/local/include",
+		"/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed",
+		"/usr/include"
+	],
+	"MOC_MACRO_NAMES" : [ "Q_OBJECT", "Q_GADGET", "Q_NAMESPACE", "Q_NAMESPACE_EXPORT" ],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : false,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"/usr/bin/c++",
+		"-dM",
+		"-E",
+		"-c",
+		"/usr/share/cmake-3.19/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "/home/luca/Documenti/GitHub/NDSFactory/build/NDSFactory_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : [],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 2,
+	"PARSE_CACHE_FILE" : "/home/luca/Documenti/GitHub/NDSFactory/build/CMakeFiles/NDSFactory_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/usr/bin/moc",
+	"QT_UIC_EXECUTABLE" : "/usr/bin/uic",
+	"QT_VERSION_MAJOR" : 5,
+	"QT_VERSION_MINOR" : 15,
+	"SETTINGS_FILE" : "/home/luca/Documenti/GitHub/NDSFactory/build/CMakeFiles/NDSFactory_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[ "/home/luca/Documenti/GitHub/NDSFactory/main.cpp", "MU" ],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ndsfactory/ndsfactory.cpp",
+			"MU"
+		],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ui/dialogs/about/aboutdialog.cpp",
+			"MU"
+		],
+		[ "/home/luca/Documenti/GitHub/NDSFactory/ui/mainwindow.cpp", "MU" ],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ui/tabs/fatpatching/fatpatchingtabfunctions.cpp",
+			"MU"
+		],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ui/tabs/fatpatching/fatpatchingtabsignals.cpp",
+			"MU"
+		],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ui/tabs/packer/packertabfunctions.cpp",
+			"MU"
+		],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ui/tabs/packer/packertabsignals.cpp",
+			"MU"
+		],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ui/tabs/unpacker/unpackertabfunctions.cpp",
+			"MU"
+		],
+		[
+			"/home/luca/Documenti/GitHub/NDSFactory/ui/tabs/unpacker/unpackertabsignals.cpp",
+			"MU"
+		]
+	],
+	"UIC_OPTIONS" : [],
+	"UIC_SEARCH_PATHS" : [],
+	"UIC_SKIP" : [],
+	"UIC_UI_FILES" : [],
+	"VERBOSITY" : 0
+}

@@ -33,7 +33,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>150</y>
+     <y>140</y>
      <width>381</width>
      <height>31</height>
     </rect>
@@ -52,13 +52,13 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>180</y>
+     <y>190</y>
      <width>381</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>(C) 2019 - Luca D'Amico</string>
+    <string>(C) 2019-2021 - Luca D'Amico</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -68,7 +68,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>200</y>
+     <y>210</y>
      <width>381</width>
      <height>20</height>
     </rect>
@@ -84,13 +84,29 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>220</y>
+     <y>230</y>
      <width>381</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>Dax89 (Davide Trogu) &amp; Kaneb (Antonio Barba)</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="aboutSoftwareBuildLbl">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>170</y>
+     <width>381</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Build Info</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
