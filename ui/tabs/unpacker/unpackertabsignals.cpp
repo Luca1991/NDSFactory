@@ -7,7 +7,6 @@
 
 void MainWindow::on_loadRomBtn_clicked()
 {
-    std::vector<char> romHeader;
     NDSHeader *pNDSHeader;
 
     QString romPath =  QFileDialog::getOpenFileName(

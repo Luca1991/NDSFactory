@@ -59,6 +59,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     NDSFactory ndsFactory;
+    std::vector<char> romHeader;
     void populateHeader(NDSHeader* ndsHeader);
     void enableExtractionButtons();
     void disableExtractionButtons();
