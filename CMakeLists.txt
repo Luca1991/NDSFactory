@@ -6,9 +6,11 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
+
+include(${CMAKE_SOURCE_DIR}/sanitizers.cmake)
 
 if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
   execute_process(
@@ -32,7 +34,12 @@ file(GLOB_RECURSE DIALOGS_SOURCES ui/dialogs/*.cpp)
 file(GLOB_RECURSE DIALOGS_UIS ui/dialogs/*.ui)
 
 # Tabs
+file(GLOB_RECURSE TABS_HEADERS ui/tabs/*.h)
 file(GLOB_RECURSE TABS_SOURCES ui/tabs/*.cpp)
+
+# Models
+file(GLOB_RECURSE MODELS_HEADERS ui/models/*.h)
+file(GLOB_RECURSE MODELS_SOURCES ui/models/*.cpp)
 
 # NDSFactory
 file(GLOB_RECURSE NDSFACTORY_SOURCES ndsfactory/*.cpp)
@@ -43,12 +50,15 @@ set(SOURCES
     ui/mainwindow.cpp
     ${NDSFACTORY_SOURCES}
     ${DIALOGS_SOURCES}
+    ${MODELS_SOURCES}
     ${TABS_SOURCES}
 )
 
 SET(HEADERS
     ui/mainwindow.h
     ${NDSFACTORY_HEADERS}
+    ${TABS_HEADERS}
+    ${MODELS_HEADERS}
     ${DIALOGS_HEADERS}
 )
 

@@ -70,5 +70,4 @@ struct NDSHeader
 };
 #pragma pack(pop)
 
-
 #endif // NDSHEADER_H

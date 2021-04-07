@@ -59,6 +59,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     NDSFactory ndsFactory;
+    std::vector<char> romHeader;
     void populateHeader(NDSHeader* ndsHeader);
     void enableExtractionButtons();
     void disableExtractionButtons();
@@ -76,6 +77,8 @@ private:
     bool dumpEverything(QString dirPath);
 
     void populatePackerSectionHeader(NDSHeader *ndsHeader);
+    void enableCalcCrcButton();
+    void enableBuildRomButton();
     void generateHeader(NDSHeader* pRomHeader);
     bool writeHeader(const std::string& savePath);
     void calcHeaderCrc16();
@@ -101,6 +104,9 @@ private:
     bool writeArm7OverlayPadding(char paddingByte, const std::string& savePath);
     bool writeArm7OverlayFilesPadding(char paddingByte, const std::string& savePath);
     bool writeRomPadding(const std::string& savePath);
+
+    //QString extractUnpackerHeaderTableData(int index);
+    QString extractPackerHeaderTableData(int index);
 
     bool decodeFatFiles();
 
