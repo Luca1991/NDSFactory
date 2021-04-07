@@ -2,11 +2,11 @@
 #include <QMessageBox>
 #include "./../../mainwindow.h"
 #include "./../../ui_mainwindow.h"
+#include "../commons/headernames.h"
 
 
 void MainWindow::on_packerLoadHeaderBtn_clicked()
 {
-    std::vector<char> romHeader;
     NDSHeader *pNDSHeader;
 
     QString headerPath =  QFileDialog::getOpenFileName(
@@ -25,6 +25,8 @@ void MainWindow::on_packerLoadHeaderBtn_clicked()
     {
         pNDSHeader = reinterpret_cast<NDSHeader*>(romHeader.data());
         populatePackerSectionHeader(pNDSHeader);
+        enableCalcCrcButton();
+        enableBuildRomButton();
     }
 }
 
@@ -165,7 +167,6 @@ void MainWindow::on_packerLoadFatFilesBtn_clicked()
     if(!fatFilesPath.isNull())
     {
         ui->loadedFatFilesPathEdt->setText(fatFilesPath.toUtf8());
-        ui->packerFatFilesAddrEdt->setText(QString::number((ui->packerIconTitleEdt->text().toUInt(nullptr, 16) + IconTitleSize), 16));
     }
 }
 
@@ -183,7 +184,6 @@ void MainWindow::on_packerBuildNDSRomBtn_clicked()
                                                : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the creation!"));
     }
 }
-
 
 void MainWindow::on_packerCalcHeaderCrcBtn_clicked()
 {

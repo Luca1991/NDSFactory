@@ -3,7 +3,6 @@
 #include <cstring>
 #include <sstream>
 #include <iomanip>
-#include <QStandardItemModel>
 #include "../../mainwindow.h"
 #include "../../ui_mainwindow.h"
 #include "../commons/headernames.h"

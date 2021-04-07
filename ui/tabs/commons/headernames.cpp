@@ -41,5 +41,5 @@ std::vector<std::string> ndsHeaderNamesArr = {
     "Debug Rom Address",
     "Debug Size",
     "Debug Ram Address",
-    "FAT Files Original Address"
+    "FAT Files Address"
 };

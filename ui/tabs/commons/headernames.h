@@ -49,7 +49,7 @@ namespace NDSHeaderNames {
         DebugRomAddress,
         DebugSize,
         DebugRamAddress,
-        FATFilesOriginalAddress
+        FATFilesAddress
     };
 }
 
