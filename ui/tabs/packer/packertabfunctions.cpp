@@ -1,5 +1,6 @@
 #include <QDir>
 #include <cstring>
+#include <cstdio>
 #include <algorithm>
 #include "./../../mainwindow.h"
 #include "./../../ui_mainwindow.h"
@@ -310,6 +311,8 @@ bool MainWindow::writeEverything(const std::string& savePath)
         paddingType = static_cast<char>('\x00');
     else
         paddingType = static_cast<char>('\xff');
+
+    std::remove(savePath.c_str());
 
     res &= writeHeader(savePath);
     res &= writeHeaderPadding(paddingType, savePath);
