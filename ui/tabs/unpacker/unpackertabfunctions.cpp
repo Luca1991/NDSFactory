@@ -1,12 +1,14 @@
 #include <QDir>
 #include <stdlib.h>
 #include <cstring>
+#include <cstdio>
 #include <sstream>
 #include <iomanip>
 #include "../../mainwindow.h"
 #include "../../ui_mainwindow.h"
 #include "../commons/headernames.h"
 #include "../../models/ndsheadermodel.h"
+#include "../../../ndsfactory/fatstruct.h"
 
 
 void MainWindow::populateHeader(NDSHeader* ndsHeader)
@@ -167,8 +169,37 @@ bool MainWindow::dumpEverything(QString dirPath)
     return true;
 }
 
-bool MainWindow::decodeFatFiles()
+bool MainWindow::decodeFatFiles(QString dirPath)
 {
-    // TODO: implement me!
-    return false;
+    std::vector<char> fatBytes;
+
+    std::string romPath=ui->loadedRomPath->text().toStdString();
+    uint32_t fatAddr=ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::FATAddress, 1).data().toString().toUInt(nullptr,16);
+    uint32_t fatSize=ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::FATSize, 1).data().toString().toUInt(nullptr,16);
+
+    fatBytes.resize(static_cast<unsigned long>(fatSize));
+
+    if(!ndsFactory.readBytesFromFile(fatBytes, romPath, fatAddr, fatSize))
+        return false;
+
+    FatRange* pfatrange = reinterpret_cast<FatRange*>(fatBytes.data());
+    uint32_t startAddr, endAddr, size;
+    size_t file_counter=0;
+
+    for(size_t i = 0; i < fatBytes.size(); i += sizeof(FatRange), pfatrange++, file_counter++){
+
+        startAddr = pfatrange->startAddr;
+        endAddr = pfatrange->endAddr;
+
+        size=endAddr-startAddr;
+
+        if(!ndsFactory.dumpDataFromFile(
+            romPath,
+            QDir::toNativeSeparators(dirPath+"/fat_file_"+QString::number(file_counter)).toStdString(),
+            startAddr,
+            size))
+            return false;
+    }
+
+    return true;
 }

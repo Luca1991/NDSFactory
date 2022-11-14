@@ -202,7 +202,14 @@ void MainWindow::on_unpackerDumpEverythingBtn_clicked()
 
 void MainWindow::on_unpackerDecodeFatFilesBtn_clicked()
 {
-    QMessageBox::warning(this, tr("NDS Factory"), tr("This function is currently not implemented!"));
-    decodeFatFiles();
-}
+    QString dirPath = QFileDialog::getExistingDirectory(
+                this, tr("Select Directory"),
+                "",
+                QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
+    if (!dirPath.isNull())
+    {
+        decodeFatFiles(dirPath) ? QMessageBox::information(this, tr("NDS Factory"), tr("FAT files successfully decoded!"))
+                         : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during FAT file decoding!"));
+    }
+}
