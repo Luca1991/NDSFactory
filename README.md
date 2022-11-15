@@ -35,7 +35,7 @@ sure that they DON'T OVERLAP, and remember to PATCH THE FAT.BIN** (more on this 
 # How to use it
 
 ## Unpacker Tab
-In the unpacker tab you can load your Nintendo DS software (.nds) and then you can extract the rom sections.
+In the unpacker tab you can load your Nintendo DS software (.nds) and then you can extract the ROM sections, including the individual FAT files.
 Please note the Original Address of the FAT Files, you will need this value later if you are going to alter the addresses and size of the sections.
 
 **You can then do what you want with these sections (inject code, apply patches etc.)**
