@@ -80,6 +80,12 @@ bool NDSFactory::writeSectionToFile(const std::string& sectionPath, const std::s
     return false;
 }
 
+bool NDSFactory::writeFatSectionToFile(const std::string& romPath, FatRange* pfatrange, const std::string& savePath){
+    uint32_t size=pfatrange->endAddr-pfatrange->startAddr;
+    if(!dumpDataFromFile(romPath, savePath, pfatrange->startAddr, size)) return false;
+    return true;
+}
+
 bool NDSFactory::writeBytesToFile(std::vector<char>& byteBuffer, const std::string& savePath, uint32_t startAddr, uint32_t size)
 {
     std::ofstream savedFile (savePath, std::ios::out|std::ios::binary|std::ios::app);
