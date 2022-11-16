@@ -1,7 +1,5 @@
 #include <QDir>
 #include <stdlib.h>
-#include <cstring>
-#include <cstdio>
 #include <sstream>
 #include <iomanip>
 #include "../../mainwindow.h"
@@ -10,6 +8,19 @@
 #include "../../models/ndsheadermodel.h"
 #include "../../../ndsfactory/fatstruct.h"
 
+// Byte offsets for interpreting memory
+
+#define SECOND_BYTE_SHIFT 8
+#define THIRD_BYTE_SHIFT 16
+#define FOURTH_BYTE_SHIFT 24
+
+// Magic values for FAT extraction
+
+#define CONTROL_BYTE_LENGTH_MASK 0x7F
+#define CONTROL_BYTE_DIR_MASK 0x80
+#define DUMMY_CONTROL_VALUE 0xFF
+#define FNT_HEADER_OFFSET_MASK 0XFFF
+#define ROOT_DIRECTORY_ADDRESS 0xF000
 
 void MainWindow::populateHeader(NDSHeader* ndsHeader)
 {
@@ -210,7 +221,7 @@ bool MainWindow::decodeFatFiles(QString dirPath)
 
         QDir curDir(QString::fromStdString(curPath)); // useful a bit later
 
-        uint32_t currentOffset = 8 * (folderId & 0xFFF); // offset for the current directory's info in the FNT header
+        uint32_t currentOffset = 8 * (folderId & FNT_HEADER_OFFSET_MASK); // offset for the current directory's info in the FNT header
         // Only the lower 12 bit of the given offset are relevant
 
         // ---------------------------------------------------------------------
@@ -234,21 +245,24 @@ bool MainWindow::decodeFatFiles(QString dirPath)
 
         // Get the 4-byte address for the folder data
 
-        uint32_t fntBodyOffset = (uint32_t)((unsigned char) fntBytes[currentOffset+3] << (uint32_t) 24 |
-          (unsigned char) fntBytes[currentOffset+2] << (uint32_t) 16 |
-          (unsigned char) fntBytes[currentOffset + 1] << (uint32_t) 8 |
+        uint32_t fntBodyOffset =
+          (uint32_t)((unsigned char) fntBytes[currentOffset+3] << (uint32_t) FOURTH_BYTE_SHIFT |
+          (unsigned char) fntBytes[currentOffset+2] << (uint32_t) THIRD_BYTE_SHIFT |
+          (unsigned char) fntBytes[currentOffset + 1] << (uint32_t) SECOND_BYTE_SHIFT |
           (unsigned char) fntBytes[currentOffset]);
         currentOffset+=4;
 
         // Get the 2-byte offset for the folder's first file in the FAT
 
-        uint16_t fatOffset = (uint16_t)((unsigned char) fntBytes[currentOffset+1] << 8 | (unsigned char) fntBytes[currentOffset]);
+        uint16_t fatOffset =
+          (uint16_t)((unsigned char) fntBytes[currentOffset+1] << SECOND_BYTE_SHIFT |
+          (unsigned char) fntBytes[currentOffset]);
 
         // Jump to FNT body a specified address
 
         currentOffset = fntBodyOffset;
 
-        uint8_t controlByte = 0xFF;
+        uint8_t controlByte = DUMMY_CONTROL_VALUE;
 
         while(true){
 
@@ -256,8 +270,8 @@ bool MainWindow::decodeFatFiles(QString dirPath)
             if(controlByte==0) break; // A control byte of 0 terminates the directory's contents
             currentOffset++;
 
-            uint8_t nameLength = controlByte & 0x7F; // length of entry name
-            bool isDir = controlByte & 0x80; // set if entry is a directory
+            uint8_t nameLength = controlByte & CONTROL_BYTE_LENGTH_MASK; // length of entry name
+            bool isDir = controlByte & CONTROL_BYTE_DIR_MASK; // set if entry is a directory
 
             // Reconstitute name from bytes
             // Btw I wish I could use the actual byte type but I have to comply with the software's choice of using char
@@ -273,7 +287,8 @@ bool MainWindow::decodeFatFiles(QString dirPath)
             if(isDir){
 
                 // Get the 2-byte address for this folder's info in the FNT header
-                uint16_t subFolderId = ((unsigned char) fntBytes[currentOffset+1] << 8 | (unsigned char) fntBytes[currentOffset]);
+                uint16_t subFolderId = ((unsigned char) fntBytes[currentOffset+1] << SECOND_BYTE_SHIFT |
+                (unsigned char) fntBytes[currentOffset]);
                 currentOffset+=2;
 
                 // Now the QDir we created earlier comes into play :
@@ -309,5 +324,5 @@ bool MainWindow::decodeFatFiles(QString dirPath)
 
     // The root folder's ID is, obviously, 0 (only the lower 12-bit count!)
 
-    return parseFolder(0xF000,dirPath.toStdString(),parseFolder);
+    return parseFolder(ROOT_DIRECTORY_ADDRESS,dirPath.toStdString(),parseFolder);
 }

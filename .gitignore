@@ -45,6 +45,4 @@ CMakeLists.txt.user*
 # OS specific
 .DS_Store
 
-# Just for this fork
 build/
-FNT-Tool/
