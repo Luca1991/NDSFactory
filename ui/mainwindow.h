@@ -108,7 +108,7 @@ private:
     //QString extractUnpackerHeaderTableData(int index);
     QString extractPackerHeaderTableData(int index);
 
-    bool decodeFatFiles();
+    bool decodeFatFiles(QString dirPath);
 
     bool patchFat(const std::string& loadPath, uint32_t shiftSize, const std::string& savePath);
 };

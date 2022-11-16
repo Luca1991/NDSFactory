@@ -44,3 +44,5 @@ CMakeLists.txt.user*
 
 # OS specific
 .DS_Store
+
+build/

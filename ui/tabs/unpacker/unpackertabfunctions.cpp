@@ -1,13 +1,26 @@
 #include <QDir>
 #include <stdlib.h>
-#include <cstring>
 #include <sstream>
 #include <iomanip>
 #include "../../mainwindow.h"
 #include "../../ui_mainwindow.h"
 #include "../commons/headernames.h"
 #include "../../models/ndsheadermodel.h"
+#include "../../../ndsfactory/fatstruct.h"
 
+// Byte offsets for interpreting memory
+
+#define SECOND_BYTE_SHIFT 8
+#define THIRD_BYTE_SHIFT 16
+#define FOURTH_BYTE_SHIFT 24
+
+// Magic values for FAT extraction
+
+#define CONTROL_BYTE_LENGTH_MASK 0x7F
+#define CONTROL_BYTE_DIR_MASK 0x80
+#define DUMMY_CONTROL_VALUE 0xFF
+#define FNT_HEADER_OFFSET_MASK 0XFFF
+#define ROOT_DIRECTORY_ADDRESS 0xF000
 
 void MainWindow::populateHeader(NDSHeader* ndsHeader)
 {
@@ -167,8 +180,149 @@ bool MainWindow::dumpEverything(QString dirPath)
     return true;
 }
 
-bool MainWindow::decodeFatFiles()
+bool MainWindow::decodeFatFiles(QString dirPath)
 {
-    // TODO: implement me!
-    return false;
+    // Prepare necessary info from ROM
+
+    std::string romPath = ui->loadedRomPath->text().toStdString(); // ROM itself
+
+    // Addresses of the file allocation table and file name table
+
+    uint32_t fatAddr = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::FATAddress, 1).data().toString().toUInt(nullptr,16);
+    uint32_t fatSize = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::FATSize, 1).data().toString().toUInt(nullptr,16);
+
+    // Sizes of these tables
+
+    uint32_t fntAddr = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::FilenameTableAddress, 1).data().toString().toUInt(nullptr,16);
+    uint32_t fntSize = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::FilenameTableSize, 1).data().toString().toUInt(nullptr,16);
+
+    // Buffers to receive the contents of the FAT and FNT
+
+    std::vector<char> fatBytes(static_cast<unsigned long>(fatSize));
+    std::vector<char> fntBytes(static_cast<unsigned long>(fntSize));
+
+    // Fill them
+
+    if(!ndsFactory.readBytesFromFile(fatBytes, romPath, fatAddr, fatSize)) return false;
+    if(!ndsFactory.readBytesFromFile(fntBytes, romPath, fntAddr, fntSize)) return false;
+
+    // Use the available FAT range struct and read the FAT bytes as such
+
+    FatRange* pfatrange = reinterpret_cast<FatRange*>(fatBytes.data());
+
+    // Recursive function that looks up FNT info to find file names and directory structures,
+    // And writes the ROM data in the ranges indicated by the FAT simultaneously.
+
+    auto parseFolder = [this, fntBytes, pfatrange, romPath](uint32_t folderId, std::string curPath, auto& parseFolder){
+
+        if(false) return false; // this is stupid, but it's C++
+        // If we take it out, the compiler will complain because it doesn't known the return type of the lambda
+        // But we can't make the lambda bool either...so this is the best option...
+
+        QDir curDir(QString::fromStdString(curPath)); // useful a bit later
+
+        uint32_t currentOffset = 8 * (folderId & FNT_HEADER_OFFSET_MASK); // offset for the current directory's info in the FNT header
+        // Only the lower 12 bit of the given offset are relevant
+
+        // ---------------------------------------------------------------------
+        // About how the FAT and FNT work :
+
+        // The FNT has two sections :
+        // a "header" where every entry contains :
+          // - a 4-byte address where the corresponding directory's data starts in the body
+          // - a 2-byte offset that is the index of the first file of the directory in the FAT
+          // (e.g. : if the offset is 42, the first file in the directory is situated at the ROM addresses stored in the 42nd FAT entry)
+          // (and its second will be 43, etc.)
+        // a "body" where every entry contains :
+         // - a length+status/control byte : lower 7 bits (control byte & 0x7F) are a length, highest bit (control byte & 0x80) is set if entry is a directory, and not set if it's a file
+         // - a name which length is the length portion of the previous control byte (e.g. : if the control byte was 0x83, the name is three bytes long)
+         // - if the entry is a directory, a 2-byte address (where only the lower 12 bit are relevant for some reason) at which this directory's info is located in the FNT header
+
+        // Thus, the FNT reading operation will consist in bouncing back and forth between body and header every time we must process a subdirectory
+        // Thank Heavens for random-access containers !
+
+        // ---------------------------------------------------------------------
+
+        // Get the 4-byte address for the folder data
+
+        uint32_t fntBodyOffset =
+          (uint32_t)((unsigned char) fntBytes[currentOffset+3] << (uint32_t) FOURTH_BYTE_SHIFT |
+          (unsigned char) fntBytes[currentOffset+2] << (uint32_t) THIRD_BYTE_SHIFT |
+          (unsigned char) fntBytes[currentOffset + 1] << (uint32_t) SECOND_BYTE_SHIFT |
+          (unsigned char) fntBytes[currentOffset]);
+        currentOffset+=4;
+
+        // Get the 2-byte offset for the folder's first file in the FAT
+
+        uint16_t fatOffset =
+          (uint16_t)((unsigned char) fntBytes[currentOffset+1] << SECOND_BYTE_SHIFT |
+          (unsigned char) fntBytes[currentOffset]);
+
+        // Jump to FNT body a specified address
+
+        currentOffset = fntBodyOffset;
+
+        uint8_t controlByte = DUMMY_CONTROL_VALUE;
+
+        while(true){
+
+            controlByte = fntBytes[currentOffset]; // Entry's control byte
+            if(controlByte==0) break; // A control byte of 0 terminates the directory's contents
+            currentOffset++;
+
+            uint8_t nameLength = controlByte & CONTROL_BYTE_LENGTH_MASK; // length of entry name
+            bool isDir = controlByte & CONTROL_BYTE_DIR_MASK; // set if entry is a directory
+
+            // Reconstitute name from bytes
+            // Btw I wish I could use the actual byte type but I have to comply with the software's choice of using char
+
+            std::vector<char> nameString;
+            for(size_t i = 0 ; i<nameLength ; i++) nameString.push_back(fntBytes[currentOffset++]);
+            std::string name(&nameString[0], (size_t)nameLength);
+
+            // We'll need this either way
+
+            QString newPath(QDir::toNativeSeparators(QString::fromStdString(curPath+"/"+name)));
+
+            if(isDir){
+
+                // Get the 2-byte address for this folder's info in the FNT header
+                uint16_t subFolderId = ((unsigned char) fntBytes[currentOffset+1] << SECOND_BYTE_SHIFT |
+                (unsigned char) fntBytes[currentOffset]);
+                currentOffset+=2;
+
+                // Now the QDir we created earlier comes into play :
+                // C++ doesn't automatically create directories (!!!) so we have to rely on QT to do that manually.
+                // Otherwise, the ofstream will not open,
+                // And even if we force it open, it will just write into nothingness !!!
+
+                if(!curDir.exists(newPath)) curDir.mkdir(newPath); // I don't think the check is even necessary, actually
+
+                // Jump back to the FNT header and repeat the process for subdirectory !
+
+                if(!parseFolder(subFolderId,newPath.toStdString(),parseFolder)) return false;
+
+            }
+            else{
+
+                // Remember we have the offset for the directory's first file in the FAT.
+                // From then, every file is just the next entry.
+                // So we just have to use that offset and increment it every time.
+
+                if(!ndsFactory.writeFatSectionToFile(
+                  romPath,
+                  pfatrange+fatOffset,
+                  newPath.toStdString()))
+                  return false;
+                fatOffset++;
+
+            }
+        }
+
+        return true;
+    };
+
+    // The root folder's ID is, obviously, 0 (only the lower 12-bit count!)
+
+    return parseFolder(ROOT_DIRECTORY_ADDRESS,dirPath.toStdString(),parseFolder);
 }
