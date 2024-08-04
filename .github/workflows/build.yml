@@ -37,8 +37,8 @@ jobs:
         tar -czvf NDSFactory-${{ github.ref_name }}-Linux-x64.tar.gz NDSFactory ../README.md ../LICENSE
     
     - name: Release on GitHub
-      working-directory: ${{github.workspace}}/build
       uses: softprops/action-gh-release@v2.0.8
+      working-directory: ${{github.workspace}}/build
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: "NDSFactory-${{ github.ref_name }}-Linux-x64.tar.gz"
