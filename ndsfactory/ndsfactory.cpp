@@ -116,7 +116,7 @@ bool NDSFactory::checkArm9FooterPresence(const std::string& sectionPath, uint32_
     std::ifstream sectionFile (sectionPath, std::ios::in|std::ios::binary|std::ios::ate);
     if (sectionFile.is_open())
     {
-        long sectionRealSize = sectionFile.tellg();
+        std::streamoff sectionRealSize = sectionFile.tellg();
         sectionFile.close();
         if (sectionRealSize >= size + Arm9FooterSize)
         {
@@ -134,8 +134,8 @@ bool NDSFactory::patchFat(const std::string& fatSectionPath, uint32_t shiftSize,
     if (!sectionFile.is_open())
         return false;
 
-    long sectionSize = sectionFile.tellg();
-    fatBytes.resize(static_cast<unsigned long>(sectionSize));
+    std::streamoff sectionSize = sectionFile.tellg();
+    fatBytes.resize(sectionSize);
 
     sectionFile.seekg (0, std::ios::beg);
 

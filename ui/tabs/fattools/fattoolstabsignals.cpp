@@ -4,7 +4,7 @@
 #include "./../../ui_mainwindow.h"
 
 
-void MainWindow::on_fatPatchingLoadFatBtn_clicked()
+void MainWindow::on_fatPatcherLoadFatBtn_clicked()
 {
     QString fatPath =  QFileDialog::getOpenFileName(
           Q_NULLPTR,
@@ -14,15 +14,15 @@ void MainWindow::on_fatPatchingLoadFatBtn_clicked()
 
     if( !fatPath.isNull() )
     {
-      ui->fatPatchingFatPathEdt->setText(fatPath.toUtf8());
+      ui->fatPatcherFatPathEdt->setText(fatPath.toUtf8());
     }
 }
 
-void MainWindow::on_fatPatchingPatchFatBtn_clicked()
+void MainWindow::on_fatPatcherPatchFatBtn_clicked()
 {
     uint32_t positionDiff = 0;
-    uint32_t originalPos = ui->fatPatchingOriginalFatFilesAddrEdt->text().toUInt(nullptr, 16);
-    uint32_t newPos = ui->fatPatchingNewFatFilesAddrEdt->text().toUInt(nullptr, 16);
+    uint32_t originalPos = ui->fatPatcherOriginalFatFilesAddrEdt->text().toUInt(nullptr, 16);
+    uint32_t newPos = ui->fatPatcherNewFatFilesAddrEdt->text().toUInt(nullptr, 16);
 
     QString dirPath =  QFileDialog::getSaveFileName(
           Q_NULLPTR,
@@ -42,7 +42,7 @@ void MainWindow::on_fatPatchingPatchFatBtn_clicked()
         positionDiff = originalPos-newPos;
     }
 
-    patchFat(ui->fatPatchingFatPathEdt->text().toStdString(), positionDiff, dirPath.toStdString())
+    patchFat(ui->fatPatcherFatPathEdt->text().toStdString(), positionDiff, dirPath.toStdString())
             ? QMessageBox::information(this, tr("NDS Factory"), tr("FAT patching completed!"))
             : QMessageBox::critical(this, tr("NDS Factory"), tr("Error patching FAT!"));
 

@@ -94,23 +94,23 @@ void MainWindow::generateHeader(NDSHeader* pRomHeader)
 
 bool MainWindow::writeHeader(const std::string& savePath)
 {
-    std::vector<char> romHeader(sizeof(NDSHeader));
-    NDSHeader* pRomHeader = reinterpret_cast<NDSHeader*>(romHeader.data());
+    std::vector<char> romHeaderBuffer(sizeof(NDSHeader));
+    NDSHeader* pRomHeader = reinterpret_cast<NDSHeader*>(romHeaderBuffer.data());
 
     generateHeader(pRomHeader);
 
-    return ndsFactory.writeBytesToFile(romHeader, savePath, 0, sizeof(NDSHeader));;
+    return ndsFactory.writeBytesToFile(romHeaderBuffer, savePath, 0, sizeof(NDSHeader));;
 }
 
 void MainWindow::calcHeaderCrc16()
 {
-    std::vector<char> romHeader(sizeof(NDSHeader));
-    NDSHeader* pRomHeader = reinterpret_cast<NDSHeader*>(romHeader.data());
+    std::vector<char> romHeaderBuffer(sizeof(NDSHeader));
+    NDSHeader* pRomHeader = reinterpret_cast<NDSHeader*>(romHeaderBuffer.data());
 
     generateHeader(pRomHeader);
 
     QModelIndex headerCrcIndex = ui->packerHeaderDataTable->model()->index(NDSHeaderNames::HeaderCRC, 1);
-    ui->packerHeaderDataTable->model()->setData(headerCrcIndex, QString::number(ndsFactory.calcHeaderCrc16(romHeader), 16), Qt::EditRole);
+    ui->packerHeaderDataTable->model()->setData(headerCrcIndex, QString::number(ndsFactory.calcHeaderCrc16(romHeaderBuffer), 16), Qt::EditRole);
 }
 
 bool MainWindow::writeArm9Bin(const std::string& savePath, bool isArm9FooterPresent)
@@ -161,7 +161,7 @@ bool MainWindow::writeArm9Overlay(const std::string& savePath)
                 extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlaySize).toUInt(nullptr, 16));
 }
 
-bool MainWindow::writeArm9OverlayFiles(const std::string& savePath)
+bool MainWindow::writeArm9OverlayFiles([[maybe_unused]] const std::string& savePath)
 {
     return false; // TODO: implement me!
 }
@@ -175,7 +175,7 @@ bool MainWindow::writeArm7Overlay(const std::string& savePath)
                 extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlaySize).toUInt(nullptr, 16));
 }
 
-bool MainWindow::writeArm7OverlayFiles(const std::string& savePath)
+bool MainWindow::writeArm7OverlayFiles([[maybe_unused]] const std::string& savePath)
 {
     return false; // TODO: implement me!
 }
@@ -268,23 +268,23 @@ bool MainWindow::writeFatPadding(char paddingType, const std::string& savePath)
                 size);
 }
 
-bool MainWindow::writeArm9OverlayPadding(char paddingType, const std::string& savePath)
+bool MainWindow::writeArm9OverlayPadding([[maybe_unused]] char paddingType, [[maybe_unused]] const std::string& savePath)
 {   // FIXME TODO
     return true;
 }
 
-bool MainWindow::writeArm9OverlayFilesPadding(char paddingType, const std::string& savePath)
+bool MainWindow::writeArm9OverlayFilesPadding([[maybe_unused]] char paddingType, [[maybe_unused]] const std::string& savePath)
 {   // FIXME TODO
     return true;
 }
 
-bool MainWindow::writeArm7OverlayPadding(char paddingType, const std::string& savePath)
+bool MainWindow::writeArm7OverlayPadding([[maybe_unused]] char paddingType, [[maybe_unused]] const std::string& savePath)
 {   // FIXME TODO
     return true;
 }
 
 
-bool MainWindow::writeArm7OverlayFilesPadding(char paddingType, const std::string& savePath)
+bool MainWindow::writeArm7OverlayFilesPadding([[maybe_unused]] char paddingType, [[maybe_unused]] const std::string& savePath)
 {   // FIXME TODO
     return true;
 }

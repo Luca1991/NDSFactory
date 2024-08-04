@@ -52,7 +52,6 @@ you can use in the packing process.
 
 * Add support for roms with OVERLAY
 * Add support to rebuild a new fat_data.bin and fat.bin from a set of files inside a directory
-* Design a nice logo/icon
 
 If you found a bug, feel free to open an issue or send a PR :)
 

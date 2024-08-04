@@ -1,17 +1,14 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.25)
 
 project(NDSFactory)
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5Widgets REQUIRED)
+# Require Qt6 components
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
+# Include sanitizers
+include(${CMAKE_SOURCE_DIR}/cmake/sanitizers.cmake)
 
-include(${CMAKE_SOURCE_DIR}/sanitizers.cmake)
-
+# Determine the Git commit hash if in a git repository
 if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
   execute_process(
     COMMAND git log -1 --format=%h
@@ -19,29 +16,31 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
     OUTPUT_VARIABLE GIT_COMMIT_HASH
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
-else(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+else()
   set(GIT_COMMIT_HASH "")
-endif(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+endif()
 
+# Configure the revision header file
 configure_file(
   ${CMAKE_SOURCE_DIR}/ui/dialogs/about/revision.h.in
   ${CMAKE_SOURCE_DIR}/ui/dialogs/about/revision.h
 )
 
-# Dialogs
+# Collect source and header files
+## Dialogs
 file(GLOB_RECURSE DIALOGS_HEADERS ui/dialogs/*.h)
 file(GLOB_RECURSE DIALOGS_SOURCES ui/dialogs/*.cpp)
 file(GLOB_RECURSE DIALOGS_UIS ui/dialogs/*.ui)
 
-# Tabs
+## Tabs
 file(GLOB_RECURSE TABS_HEADERS ui/tabs/*.h)
 file(GLOB_RECURSE TABS_SOURCES ui/tabs/*.cpp)
 
-# Models
+## Models
 file(GLOB_RECURSE MODELS_HEADERS ui/models/*.h)
 file(GLOB_RECURSE MODELS_SOURCES ui/models/*.cpp)
 
-# NDSFactory
+## NDSFactory
 file(GLOB_RECURSE NDSFACTORY_SOURCES ndsfactory/*.cpp)
 file(GLOB_RECURSE NDSFACTORY_HEADERS ndsfactory/*.h)
 
@@ -67,12 +66,36 @@ set(FORMS
     ${DIALOGS_UIS}
 )
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${FORMS})
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS} ${FORMS})
+# Platform-specific executable creation
+if(APPLE)
+    set(MACOSX_BUNDLE_ICON_FILE resources.icns)
+    set(MACOS_RESOURCES "res/resources.icns")
+    set_source_files_properties(${MACOS_RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${FORMS} ${MACOS_RESOURCES})
+elseif(WIN32)
+    set(WIN32_RESOURCES "res/resources.rc")
+    add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS} ${FORMS} ${WIN32_RESOURCES})
 else()
     add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${FORMS})
 endif()
 
-target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)
+# Set C++ standard for the target
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
+
+# Enable Qt's automatic features for the target
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    AUTOMOC ON
+    AUTOUIC ON
+)
+
+# Add compile options for different compilers
+if(MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /WX /W4 /EHsc)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror)
+endif()
+
+# Link the necessary Qt6 libraries
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets)

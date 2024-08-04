@@ -9,12 +9,12 @@ NDSHeaderModel::NDSHeaderModel(NDSHeader *ndsHeader, QObject *parent) : QAbstrac
     this->ndsHeader = ndsHeader;
 }
 
-int NDSHeaderModel::rowCount(const QModelIndex &parent) const
+int NDSHeaderModel::rowCount([[maybe_unused]] const QModelIndex &parent) const
 {
     return static_cast<int>(ndsHeaderNamesArr.size());
 }
 
-int NDSHeaderModel::columnCount(const QModelIndex &parent) const
+int NDSHeaderModel::columnCount([[maybe_unused]] const QModelIndex &parent) const
 {
     return 2;
 }

@@ -33,6 +33,7 @@ private slots:
     void on_unpackerDumpArm7OverlayFilesBtn_clicked();
     void on_unpackerDumpEverythingBtn_clicked();
     void on_unpackerDecodeFatFilesBtn_clicked();
+    void notifyExtractionResult(bool result);
 
     void on_actionExit_triggered();
     void on_actionAbout_triggered();
@@ -50,9 +51,9 @@ private slots:
     void on_packerLoadFatFilesBtn_clicked();
     void on_packerBuildNDSRomBtn_clicked();
 
-    void on_fatPatchingLoadFatBtn_clicked();
+    void on_fatPatcherLoadFatBtn_clicked();
 
-    void on_fatPatchingPatchFatBtn_clicked();
+    void on_fatPatcherPatchFatBtn_clicked();
 
     void on_packerCalcHeaderCrcBtn_clicked();
 
