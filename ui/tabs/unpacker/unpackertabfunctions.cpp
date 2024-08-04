@@ -9,18 +9,19 @@
 #include "../../../ndsfactory/fatstruct.h"
 
 // Byte offsets for interpreting memory
-
 #define SECOND_BYTE_SHIFT 8
 #define THIRD_BYTE_SHIFT 16
 #define FOURTH_BYTE_SHIFT 24
 
 // Magic values for FAT extraction
-
 #define CONTROL_BYTE_LENGTH_MASK 0x7F
 #define CONTROL_BYTE_DIR_MASK 0x80
 #define DUMMY_CONTROL_VALUE 0xFF
 #define FNT_HEADER_OFFSET_MASK 0XFFF
 #define ROOT_DIRECTORY_ADDRESS 0xF000
+
+// Size constants
+#define ICON_TITLE_SIZE 0xA00
 
 void MainWindow::populateHeader(NDSHeader* ndsHeader)
 {
@@ -107,7 +108,7 @@ bool MainWindow::dumpArm9Overlay(const std::string& dirPath)
                 ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM9OverlaySize, 1).data().toString().toUInt(nullptr,16));
 }
 
-bool MainWindow::dumpArm9OverlayFiles(const std::string& dirPath)
+bool MainWindow::dumpArm9OverlayFiles([[maybe_unused]] const std::string& dirPath)
 {
     return false; // TODO: implement me!
 }
@@ -121,7 +122,7 @@ bool MainWindow::dumpArm7Overlay(const std::string& dirPath)
                 ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7OverlaySize, 1).data().toString().toUInt(nullptr,16));
 }
 
-bool MainWindow::dumpArm7OverlayFiles(const std::string& dirPath)
+bool MainWindow::dumpArm7OverlayFiles([[maybe_unused]] const std::string& dirPath)
 {
     return false; // TODO: implement me!
 }
@@ -132,7 +133,7 @@ bool MainWindow::dumpIconTitle(const std::string& dirPath)
                 ui->loadedRomPath->text().toStdString(),
                 dirPath,
                 ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::IconTitleAddress, 1).data().toString().toUInt(nullptr,16),
-                0xA00);
+                ICON_TITLE_SIZE);
 }
 
 bool MainWindow::dumpFatFiles(const std::string& dirPath)
@@ -150,34 +151,23 @@ bool MainWindow::dumpFatFiles(const std::string& dirPath)
 
 bool MainWindow::dumpEverything(QString dirPath)
 {
-    if(!dumpHeader(QDir::toNativeSeparators(dirPath+"/header.bin").toStdString()))
-        return false;
-    if(!dumpArm9Bin(QDir::toNativeSeparators(dirPath+"/arm9.bin").toStdString(), true))
-        return false;
-    if(!dumpArm7Bin(QDir::toNativeSeparators(dirPath+"/arm7.bin").toStdString()))
-        return false;
-    if(!dumpFnt(QDir::toNativeSeparators(dirPath+"/fnt.bin").toStdString()))
-        return false;
-    if(!dumpFat(QDir::toNativeSeparators(dirPath+"/fat.bin").toStdString()))
-        return false;
+    bool result = true;
+    result &= dumpHeader(QDir::toNativeSeparators(dirPath+"/header.bin").toStdString());
+    result &= dumpArm9Bin(QDir::toNativeSeparators(dirPath+"/arm9.bin").toStdString(), true);
+    result &= dumpArm7Bin(QDir::toNativeSeparators(dirPath+"/arm7.bin").toStdString());
+    result &= dumpFnt(QDir::toNativeSeparators(dirPath+"/fnt.bin").toStdString());
+    result &= dumpFat(QDir::toNativeSeparators(dirPath+"/fat.bin").toStdString());
     if(ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM9OverlayAddress, 1).data().toString().toUInt(nullptr,16) != 0) {
-        if(!dumpArm9Overlay(QDir::toNativeSeparators(dirPath+"/a9ovr.bin").toStdString()))
-            return false;
-        if(!dumpArm9OverlayFiles(QDir::toNativeSeparators(dirPath+"/a9ovr_data.bin").toStdString()))
-            return false;
-    }
+		result &= dumpArm9Overlay(QDir::toNativeSeparators(dirPath+"/a9ovr.bin").toStdString());
+		result &= dumpArm9OverlayFiles(QDir::toNativeSeparators(dirPath+"/a9ovr_data.bin").toStdString());
+	}
     if(ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7OverlayAddress, 1).data().toString().toUInt(nullptr,16) != 0) {
-        if(!dumpArm7Overlay(QDir::toNativeSeparators(dirPath+"/a7ovr.bin").toStdString()))
-            return false;
-        if(!dumpArm7OverlayFiles(QDir::toNativeSeparators(dirPath+"/a7ovr_data.bin").toStdString()))
-            return false;
-    }
-    if(!dumpIconTitle(QDir::toNativeSeparators(dirPath+"/itl.bin").toStdString()))
-        return false;
-    if(!dumpFatFiles(QDir::toNativeSeparators(dirPath+"/fat_data.bin").toStdString()))
-        return false;
-
-    return true;
+        result &= dumpArm7Overlay(QDir::toNativeSeparators(dirPath+"/a7ovr.bin").toStdString());
+        result &= dumpArm7OverlayFiles(QDir::toNativeSeparators(dirPath+"/a7ovr_data.bin").toStdString());
+        }
+    result &= dumpIconTitle(QDir::toNativeSeparators(dirPath+"/itl.bin").toStdString());
+    result &= dumpFatFiles(QDir::toNativeSeparators(dirPath+"/fat_data.bin").toStdString());
+    return result;
 }
 
 bool MainWindow::decodeFatFiles(QString dirPath)

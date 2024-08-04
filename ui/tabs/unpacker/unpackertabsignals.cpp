@@ -41,10 +41,7 @@ void MainWindow::on_unpackerDumpHeaderBtn_clicked()
           "Binary (*.bin)");
 
     if (!dirPath.isNull())
-    {
-        dumpHeader(dirPath.toStdString()) ? QMessageBox::information(this, tr("NDS Factory"), tr("Extraction completed!"))
-                                          : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the extraction!"));
-    }
+        notifyExtractionResult(dumpHeader(dirPath.toStdString()));
 }
 
 void MainWindow::on_unpackerDumpArm9Btn_clicked()
@@ -62,11 +59,7 @@ void MainWindow::on_unpackerDumpArm9Btn_clicked()
                 QMessageBox::Yes|QMessageBox::No);
 
     if (!dirPath.isNull())
-    {
-        dumpArm9Bin(dirPath.toStdString(), dumpExtraBytes == QMessageBox::Yes ? true : false)
-                ? QMessageBox::information(this, tr("NDS Factory"), tr("Extraction completed!"))
-                : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the extraction!"));
-    }
+        notifyExtractionResult(dumpArm9Bin(dirPath.toStdString(), dumpExtraBytes == QMessageBox::Yes ? true : false));
 }
 
 void MainWindow::on_unpackerDumpArm7Btn_clicked()
@@ -78,10 +71,7 @@ void MainWindow::on_unpackerDumpArm7Btn_clicked()
           "Binary (*.bin)");
 
     if (!dirPath.isNull())
-    {
-        dumpArm7Bin(dirPath.toStdString()) ? QMessageBox::information(this, tr("NDS Factory"), tr("Extraction completed!"))
-                                           : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the extraction!"));
-    }
+        notifyExtractionResult(dumpArm7Bin(dirPath.toStdString()));
 }
 
 void MainWindow::on_unpackerDumpFntBtn_clicked()
@@ -93,10 +83,7 @@ void MainWindow::on_unpackerDumpFntBtn_clicked()
           "Binary (*.bin)");
 
     if (!dirPath.isNull())
-    {
-        dumpFnt(dirPath.toStdString()) ? QMessageBox::information(this, tr("NDS Factory"), tr("Extraction completed!"))
-                                       : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the extraction!"));
-    }
+        notifyExtractionResult(dumpFnt(dirPath.toStdString()));
 }
 
 void MainWindow::on_unpackerDumpFatBtn_clicked()
@@ -108,10 +95,7 @@ void MainWindow::on_unpackerDumpFatBtn_clicked()
           "Binary (*.bin)");
 
     if (!dirPath.isNull())
-    {
-        dumpFat(dirPath.toStdString()) ? QMessageBox::information(this, tr("NDS Factory"), tr("Extraction completed!"))
-                                       : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the extraction!"));
-    }
+        notifyExtractionResult(dumpFat(dirPath.toStdString()));
 }
 
 void MainWindow::on_unpackerDumpArm9OverlayBtn_clicked()
@@ -123,10 +107,7 @@ void MainWindow::on_unpackerDumpArm9OverlayBtn_clicked()
           "Binary (*.bin)");
 
     if (!dirPath.isNull())
-    {
-        dumpArm9Overlay(dirPath.toStdString()) ? QMessageBox::information(this, tr("NDS Factory"), tr("Extraction completed!"))
-                                               : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the extraction!"));
-    }
+        notifyExtractionResult(dumpArm9Overlay(dirPath.toStdString()));
 }
 
 void MainWindow::on_unpackerDumpArm7OverlayBtn_clicked()
@@ -138,10 +119,7 @@ void MainWindow::on_unpackerDumpArm7OverlayBtn_clicked()
           "Binary (*.bin)");
 
     if (!dirPath.isNull())
-    {
-        dumpArm7Overlay(dirPath.toStdString()) ? QMessageBox::information(this, tr("NDS Factory"), tr("Extraction completed!"))
-                                               : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the extraction!"));
-    }
+        notifyExtractionResult(dumpArm7Overlay(dirPath.toStdString()));
 }
 
 void MainWindow::on_unpackerDumpIconTitleLogoBtn_clicked()
@@ -153,10 +131,7 @@ void MainWindow::on_unpackerDumpIconTitleLogoBtn_clicked()
           "Binary (*.bin)");
 
     if (!dirPath.isNull())
-    {
-        dumpIconTitle(dirPath.toStdString()) ? QMessageBox::information(this, tr("NDS Factory"), tr("Extraction completed!"))
-                                             : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the extraction!"));
-    }
+        notifyExtractionResult(dumpIconTitle(dirPath.toStdString()));
 }
 
 void MainWindow::on_unpackerDumpFatFilesBtn_clicked()
@@ -168,10 +143,7 @@ void MainWindow::on_unpackerDumpFatFilesBtn_clicked()
           "Binary (*.bin)");
 
     if (!dirPath.isNull())
-    {
-        dumpFatFiles(dirPath.toStdString()) ? QMessageBox::information(this, tr("NDS Factory"), tr("Extraction completed!"))
-                                            : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the extraction!"));
-    }
+        notifyExtractionResult(dumpFatFiles(dirPath.toStdString()));
 }
 
 void MainWindow::on_unpackerDumpArm9OverlayFilesBtn_clicked()
@@ -194,10 +166,7 @@ void MainWindow::on_unpackerDumpEverythingBtn_clicked()
                 QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     if (!dirPath.isNull())
-    {
-        dumpEverything(dirPath) ? QMessageBox::information(this, tr("NDS Factory"), tr("Extraction completed!"))
-                                : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the extraction!"));
-    }
+        notifyExtractionResult(dumpEverything(dirPath));
 }
 
 void MainWindow::on_unpackerDecodeFatFilesBtn_clicked()
@@ -208,8 +177,17 @@ void MainWindow::on_unpackerDecodeFatFilesBtn_clicked()
                 QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     if (!dirPath.isNull())
-    {
-        decodeFatFiles(dirPath) ? QMessageBox::information(this, tr("NDS Factory"), tr("FAT files successfully decoded!"))
-                         : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during FAT file decoding!"));
-    }
+        notifyExtractionResult(decodeFatFiles(dirPath));
+}
+
+void MainWindow::notifyExtractionResult(bool result)
+{
+    if(result)
+	{
+		QMessageBox::information(this, tr("NDS Factory"), tr("Extraction completed!"));
+	}
+	else
+	{
+		QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the extraction!"));
+	}
 }
