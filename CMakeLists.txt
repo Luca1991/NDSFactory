@@ -68,10 +68,10 @@ set(FORMS
 
 # Platform-specific executable creation
 if(APPLE)
-    set(MACOSX_BUNDLE_ICON_FILE resources.icns)
-    set(MACOS_RESOURCES "res/resources.icns")
-    set_source_files_properties(${MACOS_RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${FORMS} ${MACOS_RESOURCES})
+    set(MACOSX_BUNDLE_ICON_FILE ndsfactory.icns)
+    set(MACOS_ICNS "res/ndsfactory.icns")
+    set_source_files_properties(${MACOS_ICNS} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${FORMS} ${MACOS_ICNS})
 elseif(WIN32)
     set(WIN32_RESOURCES "res/resources.rc")
     add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS} ${FORMS} ${WIN32_RESOURCES})
