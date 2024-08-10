@@ -34,7 +34,7 @@ This tool is particularly useful for modding games or writing trainers.
 # How to use
 
 ## Unpacker Tab
-In the Unpacker Tab, you can load your Nintendo DS software (.nds) and extract the ROM sections, including individual FAT files. Take note of the original address of the FAT files, as you will need this value if you alter the addresses and sizes of the sections.
+In the Unpacker Tab, you can load your Nintendo DS software (.nds) and extract the ROM sections. Take note of the original address of the FAT files, as you will need this value if you alter the addresses and sizes of the sections or if you want to extract its contents.
 
 **You can then do what you want with these sections (inject code, apply patches etc.)**
 
@@ -42,7 +42,9 @@ In the Unpacker Tab, you can load your Nintendo DS software (.nds) and extract t
 In the Packer Tab, you can recreate a .nds file using your edited sections. If your sections are larger than the originals, you must update their addresses and sizes in the header. Ensure that the addresses do not overlap, or the final ROM will be broken. If you repack edited sections and the FAT files' address is different from the original, you must patch the FAT (fat.bin). The FAT contains absolute addresses representing each file's start and end addresses, so you need to update them accordingly (use the FAT Patching Tab for this).
 
 ## Fat Tools Tab
-In this tab, you can patch the FAT section (fat.bin). This is only necessary if the FAT files' final address (fat_data.bin) differs from the original. Patching the FAT is straightforward: load your fat.bin, and fill in the original and new addresses of fat_data.bin. This will produce a patched fat.bin for use in the packing process.
+In this tab, you can:
+* extract the FAT files from fat_data.bin.
+* patch the FAT section (fat.bin): this is only necessary if the FAT files' final address (fat_data.bin) differs from the original. Patching the FAT is straightforward: load your fat.bin, and fill in the original and new addresses of fat_data.bin. This will produce a patched fat.bin for use in the packing process.
 
 # Known Limitations/Possible Future Features/Bugs
 

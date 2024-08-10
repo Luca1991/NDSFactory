@@ -169,17 +169,6 @@ void MainWindow::on_unpackerDumpEverythingBtn_clicked()
         notifyExtractionResult(dumpEverything(dirPath));
 }
 
-void MainWindow::on_unpackerDecodeFatFilesBtn_clicked()
-{
-    QString dirPath = QFileDialog::getExistingDirectory(
-                this, tr("Select Directory"),
-                "",
-                QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-
-    if (!dirPath.isNull())
-        notifyExtractionResult(decodeFatFiles(dirPath));
-}
-
 void MainWindow::notifyExtractionResult(bool result)
 {
     if(result)

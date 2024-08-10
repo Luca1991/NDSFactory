@@ -274,13 +274,6 @@
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="QPushButton" name="unpackerDecodeFatFilesBtn">
-                <property name="text">
-                 <string>Decode FAT Contents</string>
-                </property>
-               </widget>
-              </item>
              </layout>
             </widget>
            </item>
@@ -601,11 +594,135 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_14">
           <property name="spacing">
-           <number>4</number>
+           <number>6</number>
           </property>
           <property name="sizeConstraint">
            <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
           </property>
+          <item>
+           <widget class="QGroupBox" name="groupBox_7">
+            <property name="title">
+             <string>FAT Data Extractor</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_16">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_38">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QLineEdit" name="fatExtractorFatDataPathEdt"/>
+               </item>
+               <item>
+                <widget class="QPushButton" name="fatExtractorLoadFatDataBtn">
+                 <property name="text">
+                  <string>Load FAT Data(fat_data.bin)</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_40">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QLineEdit" name="fatExtractorFntPathEdt"/>
+               </item>
+               <item>
+                <widget class="QPushButton" name="fatExtractorLoadFntBtn">
+                 <property name="text">
+                  <string>Load FNT(fnt.bin)</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_39" stretch="0,0">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QLineEdit" name="fatExtractorFatPathEdt"/>
+               </item>
+               <item>
+                <widget class="QPushButton" name="fatExtractorLoadFatBtn">
+                 <property name="text">
+                  <string>Load FAT(fat.bin)</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string>Original Fat Files (fat_data.bin) Addr:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="fatExtractorOriginalFatFilesAddrEdt"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_41">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="fatExtractorExtractBtn">
+                 <property name="text">
+                  <string>Extract FAT Data!</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -733,6 +850,9 @@
          <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Policy::Expanding</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>

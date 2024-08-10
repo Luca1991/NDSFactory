@@ -31,8 +31,6 @@ private slots:
     void on_unpackerDumpArm9OverlayFilesBtn_clicked();
     void on_unpackerDumpArm7OverlayFilesBtn_clicked();
     void on_unpackerDumpEverythingBtn_clicked();
-    void on_unpackerDecodeFatFilesBtn_clicked();
-    void notifyExtractionResult(bool result);
 
     void on_actionDark_triggered();
     void on_actionLight_triggered();
@@ -51,13 +49,15 @@ private slots:
     void on_packerLoadArm7OverlayFilesBtn_clicked();
     void on_packerLoadIconTitleBtn_clicked();
     void on_packerLoadFatFilesBtn_clicked();
+    void on_packerCalcHeaderCrcBtn_clicked();
     void on_packerBuildNDSRomBtn_clicked();
 
     void on_fatPatcherLoadFatBtn_clicked();
-
     void on_fatPatcherPatchFatBtn_clicked();
-
-    void on_packerCalcHeaderCrcBtn_clicked();
+    void on_fatExtractorLoadFatDataBtn_clicked();
+    void on_fatExtractorLoadFatBtn_clicked();
+    void on_fatExtractorLoadFntBtn_clicked();
+    void on_fatExtractorExtractBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -78,6 +78,7 @@ private:
     bool dumpIconTitle(const std::string& dirPath);
     bool dumpFatFiles(const std::string& dirPath);
     bool dumpEverything(QString dirPath);
+    void notifyExtractionResult(bool result);
 
     void populatePackerSectionHeader(NDSHeader *ndsHeader);
     void enableCalcCrcButton();
@@ -111,7 +112,7 @@ private:
     //QString extractUnpackerHeaderTableData(int index);
     QString extractPackerHeaderTableData(int index);
 
-    bool decodeFatFiles(QString dirPath);
-
+    bool extractFatData(const std::string& fatDataSectionPath, const std::string& fatSectionPath,
+        const std::string& fntSectionPath, uint32_t originalFatDataAddr, const std::string& savePath);
     bool patchFat(const std::string& loadPath, uint32_t shiftSize, const std::string& savePath);
 };
