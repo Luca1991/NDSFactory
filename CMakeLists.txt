@@ -40,6 +40,9 @@ file(GLOB_RECURSE TABS_SOURCES ui/tabs/*.cpp)
 file(GLOB_RECURSE MODELS_HEADERS ui/models/*.h)
 file(GLOB_RECURSE MODELS_SOURCES ui/models/*.cpp)
 
+## Utils
+file(GLOB_RECURSE UTILS_HEADERS ui/utils/*.h)
+
 ## NDSFactory
 file(GLOB_RECURSE NDSFACTORY_SOURCES ndsfactory/*.cpp)
 file(GLOB_RECURSE NDSFACTORY_HEADERS ndsfactory/*.h)
@@ -59,6 +62,7 @@ SET(HEADERS
     ${TABS_HEADERS}
     ${MODELS_HEADERS}
     ${DIALOGS_HEADERS}
+    ${UTILS_HEADERS}
 )
 
 set(FORMS

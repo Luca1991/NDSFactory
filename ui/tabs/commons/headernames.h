@@ -1,5 +1,4 @@
-#ifndef HEADERNAMES_H
-#define HEADERNAMES_H
+#pragma once
 
 #include <array>
 #include <string>
@@ -52,5 +51,3 @@ namespace NDSHeaderNames {
         FATFilesAddress
     };
 }
-
-#endif // HEADERNAMES_H

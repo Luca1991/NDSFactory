@@ -1,5 +1,4 @@
-#ifndef NDSFACTORY_H
-#define NDSFACTORY_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -29,4 +28,3 @@ private:
 
 };
 
-#endif // NDSFACTORY_H

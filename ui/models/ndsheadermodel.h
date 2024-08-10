@@ -1,5 +1,4 @@
-#ifndef NDSHEADERMODEL_H
-#define NDSHEADERMODEL_H
+#pragma once
 
 #include <QAbstractTableModel>
 
@@ -21,5 +20,3 @@ private:
     NDSHeader *ndsHeader;
     bool isValueRowEditable = false;
 };
-
-#endif // NDSHEADERMODEL_H

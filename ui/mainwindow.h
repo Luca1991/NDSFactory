@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include <cstdint>
@@ -35,6 +34,9 @@ private slots:
     void on_unpackerDecodeFatFilesBtn_clicked();
     void notifyExtractionResult(bool result);
 
+    void on_actionDark_triggered();
+    void on_actionLight_triggered();
+    void on_actionDefault_triggered();
     void on_actionExit_triggered();
     void on_actionAbout_triggered();
 
@@ -113,5 +115,3 @@ private:
 
     bool patchFat(const std::string& loadPath, uint32_t shiftSize, const std::string& savePath);
 };
-
-#endif // MAINWINDOW_H

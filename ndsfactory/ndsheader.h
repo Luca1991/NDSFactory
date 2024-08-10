@@ -1,5 +1,4 @@
-#ifndef NDSHEADER_H
-#define NDSHEADER_H
+#pragma once
 
 #include <cstdint>
 
@@ -69,5 +68,3 @@ struct NDSHeader
     unsigned char Reserved4[0x90];
 };
 #pragma pack(pop)
-
-#endif // NDSHEADER_H

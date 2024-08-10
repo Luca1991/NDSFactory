@@ -1,13 +1,23 @@
 #include "ui/mainwindow.h"
 #include <QApplication>
 #include <QStyleFactory>
+#include "ui/utils/theme.h"
 
 int main(int argc, char *argv[])
 {
     QApplication::setStyle(QStyleFactory::create("Fusion"));
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    QApplication app(argc, argv);
+    app.setApplicationName("NDSFactory");
+    app.setOrganizationName("NDSFactory");
 
-    return a.exec();
+    QString theme = getCurrentTheme();
+    if(theme == "dark")
+		setDarkTheme(app);
+	else if(theme == "light")
+        setLightTheme(app);
+
+    MainWindow mainWindow;
+    mainWindow.show();
+
+    return app.exec();
 }
