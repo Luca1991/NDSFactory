@@ -51,7 +51,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.5.2'
+        version: '6.7.2'
       
     - name: Install CMake
       uses: lukka/get-cmake@latest
@@ -94,7 +94,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.5.2'
+        version: '6.7.2'
       
     - name: Install CMake
       uses: lukka/get-cmake@latest
