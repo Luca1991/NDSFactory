@@ -103,13 +103,8 @@ private:
     bool writeArm7BinPadding(char paddingByte, const std::string& savePath);
     bool writeFntPadding(char paddingByte, const std::string& savePath);
     bool writeFatPadding(char paddingByte, const std::string& savePath);
-    bool writeArm9OverlayPadding(char paddingByte, const std::string& savePath);
-    bool writeArm9OverlayFilesPadding(char paddingByte, const std::string& savePath);
-    bool writeArm7OverlayPadding(char paddingByte, const std::string& savePath);
-    bool writeArm7OverlayFilesPadding(char paddingByte, const std::string& savePath);
     bool writeRomPadding(const std::string& savePath);
 
-    //QString extractUnpackerHeaderTableData(int index);
     QString extractPackerHeaderTableData(int index);
 
     bool extractFatData(const std::string& fatDataSectionPath, const std::string& fatSectionPath,

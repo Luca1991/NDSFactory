@@ -10,8 +10,6 @@ If you find this software useful, please consider supporting it:
 
 ![screenshot](https://raw.githubusercontent.com/Luca1991/NDSFactory/master/screenshot.png)
 
-**!!!ROMS WITH OVERLAY ARE CURRENTLY NOT SUPPORTED!!!**
-
 # Description
 
 NDSFactory helps you easily unpack and repack Nintendo DS ROMs, but **some technical knowledge is required.**
@@ -19,11 +17,13 @@ NDSFactory helps you easily unpack and repack Nintendo DS ROMs, but **some techn
 A typical NDS ROM consists of the following sections:
 * Header
 * ARM9 Binary
+* ARM9 Overlay (Optional)
+* ARM9 Overlay Files (Optional)
 * ARM7 Binary
+* ARM7 Overlay (Optional)
+* ARM7 Overlay Files (Optional)
 * FNT (Filename Table)
 * FAT (File Allocation Table)
-* ARM9/ARM7 Overlay (Optional)
-* ARM9/ARM7 Overlay Files (Optional)
 * Icon/Title Logo
 * FAT Files (The actual files used by the software, like Graphics, Music etc.)
 
@@ -48,7 +48,6 @@ In this tab, you can:
 
 # Known Limitations/Possible Future Features/Bugs
 
-* Add support for ROMs with overlays.
 * Add support to rebuild a new fat_data.bin and fat.bin from a set of files inside a directory.
 
 If you find a bug, feel free to open an issue or submit a pull request :)

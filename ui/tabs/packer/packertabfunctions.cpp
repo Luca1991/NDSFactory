@@ -91,6 +91,16 @@ void MainWindow::generateHeader(NDSHeader* pRomHeader)
     std::fill(std::begin(pRomHeader->Reserved4), std::end(pRomHeader->Reserved4), 0);
 }
 
+void MainWindow::calcHeaderCrc16()
+{
+    std::vector<char> romHeaderBuffer(sizeof(NDSHeader));
+    NDSHeader* pRomHeader = reinterpret_cast<NDSHeader*>(romHeaderBuffer.data());
+
+    generateHeader(pRomHeader);
+
+    QModelIndex headerCrcIndex = ui->packerHeaderDataTable->model()->index(NDSHeaderNames::HeaderCRC, 1);
+    ui->packerHeaderDataTable->model()->setData(headerCrcIndex, QString::number(ndsFactory.calcHeaderCrc16(romHeaderBuffer), 16), Qt::EditRole);
+}
 
 bool MainWindow::writeHeader(const std::string& savePath)
 {
@@ -102,15 +112,16 @@ bool MainWindow::writeHeader(const std::string& savePath)
     return ndsFactory.writeBytesToFile(romHeaderBuffer, savePath, 0, sizeof(NDSHeader));;
 }
 
-void MainWindow::calcHeaderCrc16()
+bool MainWindow::writeHeaderPadding(char paddingType, const std::string& savePath)
 {
-    std::vector<char> romHeaderBuffer(sizeof(NDSHeader));
-    NDSHeader* pRomHeader = reinterpret_cast<NDSHeader*>(romHeaderBuffer.data());
+    uint32_t startAddr = sizeof(NDSHeader);
+    uint32_t size = extractPackerHeaderTableData(NDSHeaderNames::ARM9RomAddress).toUInt(nullptr, 16) - startAddr;
 
-    generateHeader(pRomHeader);
-
-    QModelIndex headerCrcIndex = ui->packerHeaderDataTable->model()->index(NDSHeaderNames::HeaderCRC, 1);
-    ui->packerHeaderDataTable->model()->setData(headerCrcIndex, QString::number(ndsFactory.calcHeaderCrc16(romHeaderBuffer), 16), Qt::EditRole);
+    return ndsFactory.writePaddingToFile(
+        paddingType,
+        savePath,
+        startAddr,
+        size);
 }
 
 bool MainWindow::writeArm9Bin(const std::string& savePath, bool isArm9FooterPresent)
@@ -125,6 +136,48 @@ bool MainWindow::writeArm9Bin(const std::string& savePath, bool isArm9FooterPres
                 size);
 }
 
+
+bool MainWindow::writeArm9BinPadding(char paddingType, const std::string& savePath, bool isFooterPresent)
+{
+    uint32_t startAddr = extractPackerHeaderTableData(NDSHeaderNames::ARM9RomAddress).toUInt(nullptr, 16) +
+        extractPackerHeaderTableData(NDSHeaderNames::ARM9Size).toUInt(nullptr, 16);
+    uint32_t size;
+    if (extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlayAddress).toUInt(nullptr, 16) != 0)
+        size = extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlayAddress).toUInt(nullptr, 16) - startAddr;
+    else
+        size = extractPackerHeaderTableData(NDSHeaderNames::ARM7RomAddress).toUInt(nullptr, 16) - startAddr;
+
+    if (isFooterPresent)
+        size -= Arm9FooterSize;
+
+    return ndsFactory.writePaddingToFile(
+        paddingType,
+        savePath,
+        startAddr,
+        size);
+}
+
+bool MainWindow::writeArm9Overlay(const std::string& savePath)
+{
+    return ndsFactory.writeSectionToFile(
+        ui->loadedArm9OverlayPathEdt->text().toStdString(),
+        savePath,
+        extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlayAddress).toUInt(nullptr, 16),
+        extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlaySize).toUInt(nullptr, 16));
+}
+
+bool MainWindow::writeArm9OverlayFiles(const std::string& savePath)
+{
+    uint32_t startAddr = extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlayAddress).toUInt(nullptr, 16) +
+        extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlaySize).toUInt(nullptr, 16);
+    uint32_t size = extractPackerHeaderTableData(NDSHeaderNames::ARM7RomAddress).toUInt(nullptr, 16) - startAddr;
+    return ndsFactory.writeSectionToFile(
+        ui->loadedArm9OverlayFilesPathEdt->text().toStdString(),
+        savePath,
+        startAddr,
+        size);
+}
+
 bool MainWindow::writeArm7Bin(const std::string& savePath)
 {
     return ndsFactory.writeSectionToFile(
@@ -132,6 +185,44 @@ bool MainWindow::writeArm7Bin(const std::string& savePath)
                 savePath,
                 extractPackerHeaderTableData(NDSHeaderNames::ARM7RomAddress).toUInt(nullptr, 16),
                 extractPackerHeaderTableData(NDSHeaderNames::ARM7Size).toUInt(nullptr, 16));
+}
+
+bool MainWindow::writeArm7BinPadding(char paddingType, const std::string& savePath)
+{
+    uint32_t startAddr = extractPackerHeaderTableData(NDSHeaderNames::ARM7RomAddress).toUInt(nullptr, 16) +
+        extractPackerHeaderTableData(NDSHeaderNames::ARM7Size).toUInt(nullptr, 16);
+    uint32_t size;
+    if (extractPackerHeaderTableData(NDSHeaderNames::ARM7OverlayAddress).toUInt(nullptr, 16) != 0)
+        size = extractPackerHeaderTableData(NDSHeaderNames::ARM7OverlayAddress).toUInt(nullptr, 16) - startAddr;
+    else
+        size = extractPackerHeaderTableData(NDSHeaderNames::FilenameTableAddress).toUInt(nullptr, 16) - startAddr;
+
+    return ndsFactory.writePaddingToFile(
+        paddingType,
+        savePath,
+        startAddr,
+        size);
+}
+
+bool MainWindow::writeArm7Overlay(const std::string& savePath)
+{
+    return ndsFactory.writeSectionToFile(
+        ui->loadedArm7OverlayPathEdt->text().toStdString(),
+        savePath,
+        extractPackerHeaderTableData(NDSHeaderNames::ARM7OverlayAddress).toUInt(nullptr, 16),
+        extractPackerHeaderTableData(NDSHeaderNames::ARM7OverlaySize).toUInt(nullptr, 16));
+}
+
+bool MainWindow::writeArm7OverlayFiles(const std::string& savePath)
+{
+    uint32_t startAddr = extractPackerHeaderTableData(NDSHeaderNames::ARM7OverlayAddress).toUInt(nullptr, 16) +
+        extractPackerHeaderTableData(NDSHeaderNames::ARM7OverlaySize).toUInt(nullptr, 16);
+    uint32_t size = extractPackerHeaderTableData(NDSHeaderNames::FilenameTableAddress).toUInt(nullptr, 16) - startAddr;
+    return ndsFactory.writeSectionToFile(
+        ui->loadedArm7OverlayFilesPathEdt->text().toStdString(),
+        savePath,
+        startAddr,
+        size);
 }
 
 bool MainWindow::writeFnt(const std::string& savePath)
@@ -143,6 +234,19 @@ bool MainWindow::writeFnt(const std::string& savePath)
                 extractPackerHeaderTableData(NDSHeaderNames::FilenameTableSize).toUInt(nullptr, 16));
 }
 
+bool MainWindow::writeFntPadding(char paddingType, const std::string& savePath)
+{
+    uint32_t startAddr = extractPackerHeaderTableData(NDSHeaderNames::FilenameTableAddress).toUInt(nullptr, 16) +
+        extractPackerHeaderTableData(NDSHeaderNames::FilenameTableSize).toUInt(nullptr, 16);
+    uint32_t size = extractPackerHeaderTableData(NDSHeaderNames::FATAddress).toUInt(nullptr, 16) - startAddr;
+
+    return ndsFactory.writePaddingToFile(
+        paddingType,
+        savePath,
+        startAddr,
+        size);
+}
+
 bool MainWindow::writeFat(const std::string& savePath)
 {
     return ndsFactory.writeSectionToFile(
@@ -152,32 +256,17 @@ bool MainWindow::writeFat(const std::string& savePath)
                 extractPackerHeaderTableData(NDSHeaderNames::FATSize).toUInt(nullptr, 16));
 }
 
-bool MainWindow::writeArm9Overlay(const std::string& savePath)
+bool MainWindow::writeFatPadding(char paddingType, const std::string& savePath)
 {
-    return ndsFactory.writeSectionToFile(
-                ui->loadedArm9OverlayPathEdt->text().toStdString(),
-                savePath,
-                extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlayAddress).toUInt(nullptr, 16),
-                extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlaySize).toUInt(nullptr, 16));
-}
+    uint32_t startAddr = extractPackerHeaderTableData(NDSHeaderNames::FATAddress).toUInt(nullptr, 16) +
+        extractPackerHeaderTableData(NDSHeaderNames::FATSize).toUInt(nullptr, 16);
+    uint32_t size = extractPackerHeaderTableData(NDSHeaderNames::IconTitleAddress).toUInt(nullptr, 16) - startAddr;
 
-bool MainWindow::writeArm9OverlayFiles([[maybe_unused]] const std::string& savePath)
-{
-    return false; // TODO: implement me!
-}
-
-bool MainWindow::writeArm7Overlay(const std::string& savePath)
-{
-    return ndsFactory.writeSectionToFile(
-                ui->loadedArm7OverlayPathEdt->text().toStdString(),
-                savePath,
-                extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlayAddress).toUInt(nullptr, 16),
-                extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlaySize).toUInt(nullptr, 16));
-}
-
-bool MainWindow::writeArm7OverlayFiles([[maybe_unused]] const std::string& savePath)
-{
-    return false; // TODO: implement me!
+    return ndsFactory.writePaddingToFile(
+        paddingType,
+        savePath,
+        startAddr,
+        size);
 }
 
 bool MainWindow::writeIconTitle(const std::string& savePath)
@@ -201,94 +290,6 @@ bool MainWindow::writeFatFiles(const std::string& savePath)
                 size);
 }
 
-bool MainWindow::writeHeaderPadding(char paddingType, const std::string& savePath)
-{
-    uint32_t startAddr = sizeof(NDSHeader);
-    uint32_t size = extractPackerHeaderTableData(NDSHeaderNames::ARM9RomAddress).toUInt(nullptr, 16) - startAddr;
-
-    return ndsFactory.writePaddingToFile(
-                paddingType,
-                savePath,
-                startAddr,
-                size);
-}
-
-bool MainWindow::writeArm9BinPadding(char paddingType, const std::string& savePath, bool isFooterPresent)
-{ // FIXME check ARM9 Overlay
-    uint32_t startAddr = extractPackerHeaderTableData(NDSHeaderNames::ARM9RomAddress).toUInt(nullptr, 16) +
-            extractPackerHeaderTableData(NDSHeaderNames::ARM9Size).toUInt(nullptr, 16);
-    uint32_t size = extractPackerHeaderTableData(NDSHeaderNames::ARM7RomAddress).toUInt(nullptr, 16) - startAddr;
-
-    if (isFooterPresent)
-        size -= Arm9FooterSize;
-
-    return ndsFactory.writePaddingToFile(
-                paddingType,
-                savePath,
-                startAddr,
-                size);
-}
-
-bool MainWindow::writeArm7BinPadding(char paddingType, const std::string& savePath)
-{  // FIXME check ARM7 Overlay
-    uint32_t startAddr = extractPackerHeaderTableData(NDSHeaderNames::ARM7RomAddress).toUInt(nullptr, 16) +
-            extractPackerHeaderTableData(NDSHeaderNames::ARM7Size).toUInt(nullptr, 16);
-    uint32_t size = extractPackerHeaderTableData(NDSHeaderNames::FilenameTableAddress).toUInt(nullptr, 16) - startAddr;
-
-    return ndsFactory.writePaddingToFile(
-                paddingType,
-                savePath,
-                startAddr,
-                size);
-}
-
-bool MainWindow::writeFntPadding(char paddingType, const std::string& savePath)
-{
-    uint32_t startAddr = extractPackerHeaderTableData(NDSHeaderNames::FilenameTableAddress).toUInt(nullptr, 16) +
-            extractPackerHeaderTableData(NDSHeaderNames::FilenameTableSize).toUInt(nullptr, 16);
-    uint32_t size = extractPackerHeaderTableData(NDSHeaderNames::FATAddress).toUInt(nullptr, 16) - startAddr;
-
-    return ndsFactory.writePaddingToFile(
-                paddingType,
-                savePath,
-                startAddr,
-                size);
-}
-
-bool MainWindow::writeFatPadding(char paddingType, const std::string& savePath)
-{
-    uint32_t startAddr = extractPackerHeaderTableData(NDSHeaderNames::FATAddress).toUInt(nullptr, 16) +
-            extractPackerHeaderTableData(NDSHeaderNames::FATSize).toUInt(nullptr, 16);
-    uint32_t size = extractPackerHeaderTableData(NDSHeaderNames::IconTitleAddress).toUInt(nullptr, 16) - startAddr;
-
-    return ndsFactory.writePaddingToFile(
-                paddingType,
-                savePath,
-                startAddr,
-                size);
-}
-
-bool MainWindow::writeArm9OverlayPadding([[maybe_unused]] char paddingType, [[maybe_unused]] const std::string& savePath)
-{   // FIXME TODO
-    return true;
-}
-
-bool MainWindow::writeArm9OverlayFilesPadding([[maybe_unused]] char paddingType, [[maybe_unused]] const std::string& savePath)
-{   // FIXME TODO
-    return true;
-}
-
-bool MainWindow::writeArm7OverlayPadding([[maybe_unused]] char paddingType, [[maybe_unused]] const std::string& savePath)
-{   // FIXME TODO
-    return true;
-}
-
-
-bool MainWindow::writeArm7OverlayFilesPadding([[maybe_unused]] char paddingType, [[maybe_unused]] const std::string& savePath)
-{   // FIXME TODO
-    return true;
-}
-
 bool MainWindow::writeRomPadding(const std::string& savePath)
 {
      uint32_t startAddr = extractPackerHeaderTableData(NDSHeaderNames::UsedRomSize).toUInt(nullptr, 16);
@@ -306,7 +307,7 @@ bool MainWindow::writeEverything(const std::string& savePath)
     bool res = true;
     char paddingType;
     bool isArm9FooterPresent = ndsFactory.checkArm9FooterPresence(ui->loadedArm9BinPathEdt->text().toStdString(),
-                                                                  extractPackerHeaderTableData(NDSHeaderNames::ARM9Size).toUInt(nullptr, 16));
+        extractPackerHeaderTableData(NDSHeaderNames::ARM9Size).toUInt(nullptr, 16));
     if (ui->packerPadType00RdBtn->isChecked())
         paddingType = static_cast<char>('\x00');
     else
@@ -318,24 +319,21 @@ bool MainWindow::writeEverything(const std::string& savePath)
     res &= writeHeaderPadding(paddingType, savePath);
     res &= writeArm9Bin(savePath, isArm9FooterPresent);
     res &= writeArm9BinPadding(paddingType, savePath, isArm9FooterPresent);
+    if (extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlayAddress).toUInt(nullptr, 16) != 0)
+    {
+        res &= writeArm9Overlay(savePath);
+        res &= writeArm9OverlayFiles(savePath);
+    }
     res &= writeArm7Bin(savePath);
     res &= writeArm7BinPadding(paddingType, savePath);
+    if (extractPackerHeaderTableData(NDSHeaderNames::ARM7OverlayAddress).toUInt(nullptr, 16) != 0) {
+        res &= writeArm7Overlay(savePath);
+        res &= writeArm7OverlayFiles(savePath);
+    }
     res &= writeFnt(savePath);
     res &= writeFntPadding(paddingType, savePath);
     res &= writeFat(savePath);
     res &= writeFatPadding(paddingType, savePath);
-    if(extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlayAddress).toUInt(nullptr, 16) != 0) {
-        res &= writeArm9Overlay(savePath);
-        res &= writeArm9OverlayPadding(paddingType, savePath);
-        res &= writeArm9OverlayFiles(savePath);
-        res &= writeArm9OverlayFilesPadding(paddingType, savePath);
-    }
-    if(extractPackerHeaderTableData(NDSHeaderNames::ARM9OverlayAddress).toUInt(nullptr, 16) != 0) {
-        res &= writeArm7Overlay(savePath);
-        res &= writeArm7OverlayPadding(paddingType, savePath);
-        res &= writeArm7OverlayFiles(savePath);
-        res &= writeArm7OverlayFilesPadding(paddingType, savePath);
-    }
     res &= writeIconTitle(savePath);
     res &= writeFatFiles(savePath);
     if(!ui->packerTrimRomsCbx->isChecked())

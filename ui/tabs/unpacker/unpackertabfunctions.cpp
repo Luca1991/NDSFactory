@@ -96,9 +96,17 @@ bool MainWindow::dumpArm9Overlay(const std::string& dirPath)
                 ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM9OverlaySize, 1).data().toString().toUInt(nullptr,16));
 }
 
-bool MainWindow::dumpArm9OverlayFiles([[maybe_unused]] const std::string& dirPath)
+bool MainWindow::dumpArm9OverlayFiles(const std::string& dirPath)
 {
-    return false; // TODO: implement me!
+    uint32_t startAddr = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM9OverlayAddress, 1).data().toString().toUInt(nullptr, 16) +
+        ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM9OverlaySize, 1).data().toString().toUInt(nullptr, 16);
+	uint32_t size = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7RomAddress, 1).data().toString().toUInt(nullptr, 16) - startAddr;
+
+    return ndsFactory.dumpDataFromFile(
+        ui->loadedRomPath->text().toStdString(),
+        dirPath,
+        startAddr,
+        size);
 }
 
 bool MainWindow::dumpArm7Overlay(const std::string& dirPath)
@@ -110,9 +118,17 @@ bool MainWindow::dumpArm7Overlay(const std::string& dirPath)
                 ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7OverlaySize, 1).data().toString().toUInt(nullptr,16));
 }
 
-bool MainWindow::dumpArm7OverlayFiles([[maybe_unused]] const std::string& dirPath)
+bool MainWindow::dumpArm7OverlayFiles(const std::string& dirPath)
 {
-    return false; // TODO: implement me!
+    uint32_t startAddr = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7OverlayAddress, 1).data().toString().toUInt(nullptr, 16) +
+        ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7OverlaySize, 1).data().toString().toUInt(nullptr, 16);
+    uint32_t size = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::FilenameTableAddress, 1).data().toString().toUInt(nullptr, 16) - startAddr;
+
+    return ndsFactory.dumpDataFromFile(
+        ui->loadedRomPath->text().toStdString(),
+        dirPath,
+        startAddr,
+        size);
 }
 
 bool MainWindow::dumpIconTitle(const std::string& dirPath)
