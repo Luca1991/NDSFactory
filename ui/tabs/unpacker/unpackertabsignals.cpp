@@ -148,14 +148,26 @@ void MainWindow::on_unpackerDumpFatFilesBtn_clicked()
 
 void MainWindow::on_unpackerDumpArm9OverlayFilesBtn_clicked()
 {
-    QMessageBox::warning(this, tr("NDS Factory"), tr("This function is currently not implemented!"));
-    //dumpArm9OverlayFiles()
+    QString dirPath = QFileDialog::getSaveFileName(
+        Q_NULLPTR,
+        "NDS ARM9 Overlay Data",
+        "a9ovr_data.bin",
+        "Binary (*.bin)");
+
+	if (!dirPath.isNull())
+		notifyExtractionResult(dumpArm9OverlayFiles(dirPath.toStdString()));
 }
 
 void MainWindow::on_unpackerDumpArm7OverlayFilesBtn_clicked()
 {
-    QMessageBox::warning(this, tr("NDS Factory"), tr("This function is currently not implemented!"));
-    //dumpArm7OverlayFiles()
+	QString dirPath = QFileDialog::getSaveFileName(
+		Q_NULLPTR,
+		"NDS ARM7 Overlay Data",
+		"a7ovr_data.bin",
+		"Binary (*.bin)");
+
+	if (!dirPath.isNull())
+		notifyExtractionResult(dumpArm7OverlayFiles(dirPath.toStdString()));
 }
 
 void MainWindow::on_unpackerDumpEverythingBtn_clicked()
