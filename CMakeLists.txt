@@ -84,7 +84,7 @@ else()
 endif()
 
 # Set C++ standard for the target
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 
 # Enable Qt's automatic features for the target
 set_target_properties(${PROJECT_NAME} PROPERTIES
