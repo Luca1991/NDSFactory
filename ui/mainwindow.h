@@ -108,6 +108,6 @@ private:
     QString extractPackerHeaderTableData(int index);
 
     bool extractFatData(const std::string& fatDataSectionPath, const std::string& fatSectionPath,
-        const std::string& fntSectionPath, uint32_t originalFatDataAddr, const std::string& savePath);
+        const std::string& fntSectionPath, uint32_t originalFatDataAddr, const std::string& savePath, bool logFileIDs);
     bool patchFat(const std::string& loadPath, uint32_t shiftSize, const std::string& savePath);
 };

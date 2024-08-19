@@ -2,9 +2,9 @@
 
 
 bool MainWindow::extractFatData(const std::string& fatDataSectionPath, const std::string& fatSectionPath,
-    const std::string& fntSectionPath, uint32_t originalFatDataAddr, const std::string& savePath)
+    const std::string& fntSectionPath, uint32_t originalFatDataAddr, const std::string& savePath, bool logFileIDs)
 {
-    return ndsFactory.extractFatData(fatDataSectionPath, fatSectionPath, fntSectionPath, originalFatDataAddr, savePath);
+    return ndsFactory.extractFatData(fatDataSectionPath, fatSectionPath, fntSectionPath, originalFatDataAddr, savePath, logFileIDs);
 }
 
 bool MainWindow::patchFat(const std::string& loadPath, uint32_t shiftSize, const std::string& savePath)

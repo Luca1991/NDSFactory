@@ -698,6 +698,17 @@
               </layout>
              </item>
              <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <item>
+                <widget class="QCheckBox" name="fatExtractorSaveFileIDsCbx">
+                 <property name="text">
+                  <string>Save file IDs to _file_IDs.txt (required for games that access files by their ID)</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_41">
                <property name="leftMargin">
                 <number>0</number>

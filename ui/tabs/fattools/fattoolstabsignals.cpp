@@ -54,10 +54,11 @@ void MainWindow::on_fatExtractorExtractBtn_clicked()
 
     if (!dirPath.isNull())
         extractFatData(ui->fatExtractorFatDataPathEdt->text().toStdString(),
-        ui->fatExtractorFatPathEdt->text().toStdString(),
-        ui->fatExtractorFntPathEdt->text().toStdString(),
-        ui->fatExtractorOriginalFatFilesAddrEdt->text().toUInt(nullptr, 16),
-        dirPath.toStdString()) ? QMessageBox::information(this, tr("NDS Factory"), tr("FAT files extraction completed!"))
+            ui->fatExtractorFatPathEdt->text().toStdString(),
+            ui->fatExtractorFntPathEdt->text().toStdString(),
+            ui->fatExtractorOriginalFatFilesAddrEdt->text().toUInt(nullptr, 16),
+            dirPath.toStdString(),
+            ui->fatExtractorSaveFileIDsCbx->isChecked()) ? QMessageBox::information(this, tr("NDS Factory"), tr("FAT files extraction completed!"))
         : QMessageBox::critical(this, tr("NDS Factory"), tr("Error extracting FAT files!"));
 
 }

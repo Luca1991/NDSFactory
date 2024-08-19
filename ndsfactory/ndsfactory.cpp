@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cmath>
 #include <filesystem>
+#include <format>
 #include "ndsfactory.h"
 #include "fatstruct.h"
 #include "crctable.h"
@@ -55,6 +56,18 @@ bool NDSFactory::dumpDataFromFile(const std::string& romPath, const std::string&
         romFile.close();
 
         savedFile.write(dumpBuffer.data(), size);
+        savedFile.close();
+        return true;
+    }
+    return false;
+}
+
+bool NDSFactory::logToFile(const std::string& logPath, const std::string& log)
+{
+    std::ofstream savedFile(logPath, std::ios::out | std::ios::binary | std::ios::app);
+    if (savedFile.is_open())
+    {
+		savedFile.write(log.c_str(), log.size());
         savedFile.close();
         return true;
     }
@@ -135,7 +148,7 @@ bool NDSFactory::checkArm9FooterPresence(const std::string& sectionPath, uint32_
 }
 
 bool NDSFactory::extractFatData(const std::string& fatDataSectionPath, const std::string& fatSectionPath,
-    const std::string& fntSectionPath, uint32_t originalFatDataAddr, const std::string& savePath)
+    const std::string& fntSectionPath, uint32_t originalFatDataAddr, const std::string& savePath, bool logFileIDs)
 {
     std::vector<char> fatDataBytes;
     std::vector<char> fatBytes;
@@ -169,7 +182,7 @@ bool NDSFactory::extractFatData(const std::string& fatDataSectionPath, const std
 
     // This lambda function was written by NyuBlara, all credits to him.
     // I edited it a bit to make it work with the rest of the updated code.
-    auto parseFolder = [this, fntBytes, pfatrange, fatDataSectionPath, originalFatDataAddr](uint32_t folderId, std::string curPath, auto& parseFolder) {
+    auto parseFolder = [this, fntBytes, pfatrange, fatDataSectionPath, originalFatDataAddr, savePath, logFileIDs](uint32_t folderId, std::string curPath, auto& parseFolder) {
 
         uint32_t currentOffset = 8 * (folderId & FNT_HEADER_OFFSET_MASK); // offset for the current directory's info in the FNT header
         // Only the lower 12 bit of the given offset are relevant
@@ -236,6 +249,12 @@ bool NDSFactory::extractFatData(const std::string& fatDataSectionPath, const std
                 if (!std::filesystem::exists(newPath))
                     if (!std::filesystem::create_directory(newPath)) return false;
 
+                if (logFileIDs)
+                {
+					std::string log = std::format("{:x}",subFolderId) + "::D::" + newPath.substr(savePath.size()+1) + '\n';
+                    if (!logToFile(savePath + "/_file_IDs.txt", log)) return false;
+                }
+
                 // Jump back to the FNT header and repeat the process for subdirectory !
                 if (!parseFolder(subFolderId, newPath, parseFolder)) return false;
             }
@@ -249,6 +268,12 @@ bool NDSFactory::extractFatData(const std::string& fatDataSectionPath, const std
                 uint32_t fileSize = (pfatrange + fatOffset)->endAddr - (pfatrange + fatOffset)->startAddr;
                 if (!dumpDataFromFile(fatDataSectionPath, newPath, fileStartAddr, fileSize)) return false;
 
+                if (logFileIDs)
+                {
+                    std::string log = std::format("{:x}", fatOffset) + "::F::" + newPath.substr(savePath.size()+1) + '\n';
+                    if (!logToFile(savePath + "/_file_IDs.txt", log)) return false;
+                }
+				
                 fatOffset++;
             }
         }
