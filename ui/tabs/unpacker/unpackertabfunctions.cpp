@@ -23,13 +23,25 @@ void MainWindow::enableExtractionButtons()
 {
     ui->unpackerExtractorGbx->setEnabled(true);
     ui->unpackerExtraGbx->setEnabled(true);
-    if (ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM9OverlayAddress, 1).data().toString().toUInt(nullptr,16) == 0){
+    if (ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM9OverlayAddress, 1).data().toString().toUInt(nullptr,16) == 0)
+    {
         ui->unpackerDumpArm9OverlayBtn->setEnabled(false);
         ui->unpackerDumpArm9OverlayFilesBtn->setEnabled(false);
     }
-    if (ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7OverlayAddress, 1).data().toString().toUInt(nullptr,16) == 0){
+    else
+	{
+		ui->unpackerDumpArm9OverlayBtn->setEnabled(true);
+		ui->unpackerDumpArm9OverlayFilesBtn->setEnabled(true);
+	}
+    if (ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7OverlayAddress, 1).data().toString().toUInt(nullptr,16) == 0)
+    {
         ui->unpackerDumpArm7OverlayBtn->setEnabled(false);
         ui->unpackerDumpArm7OverlayFilesBtn->setEnabled(false);
+    }
+    else
+    {
+		ui->unpackerDumpArm7OverlayBtn->setEnabled(true);
+		ui->unpackerDumpArm7OverlayFilesBtn->setEnabled(true);
     }
 }
 
