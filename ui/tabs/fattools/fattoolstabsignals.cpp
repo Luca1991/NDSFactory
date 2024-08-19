@@ -8,7 +8,7 @@ void MainWindow::on_fatExtractorLoadFatDataBtn_clicked()
     QString FatDataPath = QFileDialog::getOpenFileName(
         Q_NULLPTR,
         "NDS Fat Data",
-        QDir::currentPath(),
+        "",
         "NDS FAT_DATA (*.bin)");
 
     if (!FatDataPath.isNull())
@@ -22,7 +22,7 @@ void MainWindow::on_fatExtractorLoadFatBtn_clicked()
 	QString FatPath = QFileDialog::getOpenFileName(
 		Q_NULLPTR,
 		"NDS Fat",
-		QDir::currentPath(),
+		"",
 		"NDS FAT (*.bin)");
 
 	if (!FatPath.isNull())
@@ -36,7 +36,7 @@ void MainWindow::on_fatExtractorLoadFntBtn_clicked()
 	QString FntPath = QFileDialog::getOpenFileName(
 		Q_NULLPTR,
 		"NDS Fnt",
-		QDir::currentPath(),
+		"",
 		"NDS FNT (*.bin)");
 
 	if (!FntPath.isNull())
@@ -68,7 +68,7 @@ void MainWindow::on_fatPatcherLoadFatBtn_clicked()
     QString fatPath =  QFileDialog::getOpenFileName(
           Q_NULLPTR,
           "NDS Fat",
-          QDir::currentPath(),
+          "",
           "NDS Fat (*.bin)");
 
     if( !fatPath.isNull() )

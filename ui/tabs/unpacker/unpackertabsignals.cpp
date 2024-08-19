@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include "./../../mainwindow.h"
 #include "./../../ui_mainwindow.h"
+#include "./../../utils/filepicker.h"
 
 
 void MainWindow::on_loadRomBtn_clicked()
@@ -34,11 +35,7 @@ void MainWindow::on_loadRomBtn_clicked()
 
 void MainWindow::on_unpackerDumpHeaderBtn_clicked()
 {
-    QString dirPath =  QFileDialog::getSaveFileName(
-          Q_NULLPTR,
-          "NDS Header",
-          "header.bin",
-          "Binary (*.bin)");
+    QString dirPath = customSaveFileDialog("NDS Header", "header.bin", "Binary (*.bin)");
 
     if (!dirPath.isNull())
         notifyExtractionResult(dumpHeader(dirPath.toStdString()));
@@ -46,11 +43,7 @@ void MainWindow::on_unpackerDumpHeaderBtn_clicked()
 
 void MainWindow::on_unpackerDumpArm9Btn_clicked()
 {
-    QString dirPath =  QFileDialog::getSaveFileName(
-          Q_NULLPTR,
-          "NDS ARM9",
-          "arm9.bin",
-          "Binary (*.bin)");
+	QString dirPath = customSaveFileDialog("NDS ARM9", "arm9.bin", "Binary (*.bin)");
 
     QMessageBox::StandardButton dumpExtraBytes = QMessageBox::question(
                 this,
@@ -64,11 +57,7 @@ void MainWindow::on_unpackerDumpArm9Btn_clicked()
 
 void MainWindow::on_unpackerDumpArm7Btn_clicked()
 {
-    QString dirPath =  QFileDialog::getSaveFileName(
-          Q_NULLPTR,
-          "NDS ARM7",
-          "arm7.bin",
-          "Binary (*.bin)");
+    QString dirPath = customSaveFileDialog("NDS ARM7", "arm7.bin", "Binary (*.bin)");
 
     if (!dirPath.isNull())
         notifyExtractionResult(dumpArm7Bin(dirPath.toStdString()));
@@ -76,11 +65,7 @@ void MainWindow::on_unpackerDumpArm7Btn_clicked()
 
 void MainWindow::on_unpackerDumpFntBtn_clicked()
 {
-    QString dirPath =  QFileDialog::getSaveFileName(
-          Q_NULLPTR,
-          "NDS FNT",
-          "fnt.bin",
-          "Binary (*.bin)");
+    QString dirPath = customSaveFileDialog("NDS FNT", "fnt.bin", "Binary (*.bin)");
 
     if (!dirPath.isNull())
         notifyExtractionResult(dumpFnt(dirPath.toStdString()));
@@ -88,11 +73,7 @@ void MainWindow::on_unpackerDumpFntBtn_clicked()
 
 void MainWindow::on_unpackerDumpFatBtn_clicked()
 {
-    QString dirPath =  QFileDialog::getSaveFileName(
-          Q_NULLPTR,
-          "NDS FAT",
-          "fat.bin",
-          "Binary (*.bin)");
+    QString dirPath = customSaveFileDialog("NDS FAT", "fat.bin", "Binary (*.bin)");
 
     if (!dirPath.isNull())
         notifyExtractionResult(dumpFat(dirPath.toStdString()));
@@ -100,11 +81,7 @@ void MainWindow::on_unpackerDumpFatBtn_clicked()
 
 void MainWindow::on_unpackerDumpArm9OverlayBtn_clicked()
 {
-    QString dirPath =  QFileDialog::getSaveFileName(
-          Q_NULLPTR,
-          "NDS ARM9 Overlay",
-          "a9ovr.bin",
-          "Binary (*.bin)");
+    QString dirPath = customSaveFileDialog("NDS ARM9 Overlay", "a9ovr.bin", "Binary (*.bin)");
 
     if (!dirPath.isNull())
         notifyExtractionResult(dumpArm9Overlay(dirPath.toStdString()));
@@ -112,11 +89,7 @@ void MainWindow::on_unpackerDumpArm9OverlayBtn_clicked()
 
 void MainWindow::on_unpackerDumpArm7OverlayBtn_clicked()
 {
-    QString dirPath =  QFileDialog::getSaveFileName(
-          Q_NULLPTR,
-          "NDS ARM7 Overlay",
-          "a7ovr.bin",
-          "Binary (*.bin)");
+    QString dirPath = customSaveFileDialog("NDS ARM7 Overlay", "a7ovr.bin", "Binary (*.bin)");
 
     if (!dirPath.isNull())
         notifyExtractionResult(dumpArm7Overlay(dirPath.toStdString()));
@@ -124,11 +97,7 @@ void MainWindow::on_unpackerDumpArm7OverlayBtn_clicked()
 
 void MainWindow::on_unpackerDumpIconTitleLogoBtn_clicked()
 {
-    QString dirPath =  QFileDialog::getSaveFileName(
-          Q_NULLPTR,
-          "NDS IconTitleLogo",
-          "itl.bin",
-          "Binary (*.bin)");
+    QString dirPath = customSaveFileDialog("NDS IconTitleLogo", "itl.bin", "Binary (*.bin)");
 
     if (!dirPath.isNull())
         notifyExtractionResult(dumpIconTitle(dirPath.toStdString()));
@@ -136,11 +105,7 @@ void MainWindow::on_unpackerDumpIconTitleLogoBtn_clicked()
 
 void MainWindow::on_unpackerDumpFatFilesBtn_clicked()
 {
-    QString dirPath =  QFileDialog::getSaveFileName(
-          Q_NULLPTR,
-          "NDS FAT Files",
-          "fat_data.bin",
-          "Binary (*.bin)");
+    QString dirPath = customSaveFileDialog("NDS FAT Files", "fat_data.bin", "Binary (*.bin)");
 
     if (!dirPath.isNull())
         notifyExtractionResult(dumpFatFiles(dirPath.toStdString()));
@@ -148,11 +113,7 @@ void MainWindow::on_unpackerDumpFatFilesBtn_clicked()
 
 void MainWindow::on_unpackerDumpArm9OverlayFilesBtn_clicked()
 {
-    QString dirPath = QFileDialog::getSaveFileName(
-        Q_NULLPTR,
-        "NDS ARM9 Overlay Data",
-        "a9ovr_data.bin",
-        "Binary (*.bin)");
+    QString dirPath = customSaveFileDialog("NDS ARM9 Overlay Data", "a9ovr_data.bin", "Binary (*.bin)");
 
 	if (!dirPath.isNull())
 		notifyExtractionResult(dumpArm9OverlayFiles(dirPath.toStdString()));
@@ -160,11 +121,7 @@ void MainWindow::on_unpackerDumpArm9OverlayFilesBtn_clicked()
 
 void MainWindow::on_unpackerDumpArm7OverlayFilesBtn_clicked()
 {
-	QString dirPath = QFileDialog::getSaveFileName(
-		Q_NULLPTR,
-		"NDS ARM7 Overlay Data",
-		"a7ovr_data.bin",
-		"Binary (*.bin)");
+	QString dirPath = customSaveFileDialog("NDS ARM7 Overlay Data", "a7ovr_data.bin", "Binary (*.bin)");
 
 	if (!dirPath.isNull())
 		notifyExtractionResult(dumpArm7OverlayFiles(dirPath.toStdString()));

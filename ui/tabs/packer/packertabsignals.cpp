@@ -35,7 +35,7 @@ void MainWindow::on_packerLoadArm9BinBtn_clicked()
     QString arm9BinPath = QFileDialog::getOpenFileName(
           Q_NULLPTR,
           "NDS Arm9Bin",
-          QDir::currentPath(),
+          "",
           "NDS Arm9Bin (*.bin)");
 
     if(!arm9BinPath.isNull())
@@ -49,7 +49,7 @@ void MainWindow::on_packerLoadArm7BinBtn_clicked()
     QString arm7BinPath = QFileDialog::getOpenFileName(
           Q_NULLPTR,
           "NDS Arm7Bin",
-          QDir::currentPath(),
+          "",
           "NDS Arm7Bin (*.bin)");
 
     if(!arm7BinPath.isNull())
@@ -63,7 +63,7 @@ void MainWindow::on_packerLoadFntBtn_clicked()
     QString fntPath = QFileDialog::getOpenFileName(
           Q_NULLPTR,
           "NDS Fnt",
-          QDir::currentPath(),
+          "",
           "NDS Fnt (*.bin)");
 
     if(!fntPath.isNull())
@@ -77,7 +77,7 @@ void MainWindow::on_packerLoadFatBtn_clicked()
     QString fatPath = QFileDialog::getOpenFileName(
           Q_NULLPTR,
           "NDS Fat",
-          QDir::currentPath(),
+          "",
           "NDS Fat (*.bin)");
 
     if(!fatPath.isNull())
@@ -91,7 +91,7 @@ void MainWindow::on_packerLoadArm9OverlayBtn_clicked()
     QString arm9OverlayPath = QFileDialog::getOpenFileName(
           Q_NULLPTR,
           "NDS Arm9Overlay",
-          QDir::currentPath(),
+          "",
           "NDS A9OVR (*.bin)");
 
     if( !arm9OverlayPath.isNull() )
@@ -105,7 +105,7 @@ void MainWindow::on_packerLoadArm9OverlayFilesBtn_clicked()
     QString arm9OverlayFilesPath = QFileDialog::getOpenFileName(
           Q_NULLPTR,
           "NDS Arm9Overlay Data",
-          QDir::currentPath(),
+          "",
           "NDS A9OVR_DATA (*.bin)");
 
     if(!arm9OverlayFilesPath.isNull())
@@ -119,7 +119,7 @@ void MainWindow::on_packerLoadArm7OverlayBtn_clicked()
     QString arm7OverlayPath = QFileDialog::getOpenFileName(
           Q_NULLPTR,
           "NDS Arm7Overlay",
-          QDir::currentPath(),
+          "",
           "NDS A7OVR (*.bin)");
 
     if(!arm7OverlayPath.isNull())
@@ -133,7 +133,7 @@ void MainWindow::on_packerLoadArm7OverlayFilesBtn_clicked()
     QString arm7OverlayFilesPath = QFileDialog::getOpenFileName(
           Q_NULLPTR,
           "NDS Arm7Overlay Data",
-          QDir::currentPath(),
+          "",
           "NDS A7OVR_DATA (*.bin)");
 
     if(!arm7OverlayFilesPath.isNull())
@@ -147,7 +147,7 @@ void MainWindow::on_packerLoadIconTitleBtn_clicked()
     QString iconTitlePath = QFileDialog::getOpenFileName(
           Q_NULLPTR,
           "NDS IconTitleLogo",
-          QDir::currentPath(),
+          "",
           "NDS ITL (*.bin)");
 
     if(!iconTitlePath.isNull())
@@ -161,7 +161,7 @@ void MainWindow::on_packerLoadFatFilesBtn_clicked()
     QString fatFilesPath = QFileDialog::getOpenFileName(
           Q_NULLPTR,
           "NDS Fat Data",
-          QDir::currentPath(),
+          "",
           "NDS FAT_DATA (*.bin)");
 
     if(!fatFilesPath.isNull())
