@@ -251,7 +251,7 @@ bool NDSFactory::extractFatData(const std::string& fatDataSectionPath, const std
 
                 if (logFileIDs)
                 {
-					std::string log = std::format("{:x}",subFolderId) + "::D::" + newPath.substr(savePath.size()+1) + '\n';
+					std::string log = std::format("{:x}",subFolderId) + ":::" + newPath.substr(savePath.size()+1) + '\n';
                     if (!logToFile(savePath + "/_file_IDs.txt", log)) return false;
                 }
 
@@ -270,7 +270,7 @@ bool NDSFactory::extractFatData(const std::string& fatDataSectionPath, const std
 
                 if (logFileIDs)
                 {
-                    std::string log = std::format("{:x}", fatOffset) + "::F::" + newPath.substr(savePath.size()+1) + '\n';
+                    std::string log = std::format("{:x}", fatOffset) + ":::" + newPath.substr(savePath.size()+1) + '\n';
                     if (!logToFile(savePath + "/_file_IDs.txt", log)) return false;
                 }
 				
