@@ -49,7 +49,7 @@ inline void setTheme(QString themeValue)
 {
     QSettings settings;
     settings.setValue("theme", themeValue);
-    QMessageBox::information(nullptr, "NDS Factory", "Restart NDSFactory to change theme!");
+    QMessageBox::information(nullptr, "NDSFactory", "Restart NDSFactory to change theme!");
 
 }
 

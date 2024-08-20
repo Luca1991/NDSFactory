@@ -151,7 +151,7 @@ bool NDSHeaderModel::setData(const QModelIndex &index, const QVariant &value, in
     case 37: ndsHeader->DebugRomAddr = static_cast<uint32_t>(value.toString().toUInt(nullptr, 16)); break;
     case 38: ndsHeader->DebugSize = static_cast<uint32_t>(value.toString().toUInt(nullptr, 16)); break;
     case 39: ndsHeader->DebugRamAddr = static_cast<uint32_t>(value.toString().toUInt(nullptr, 16)); break;
-    case 40: QMessageBox::information(nullptr, tr("NDS Factory"), tr("FAT files address is automatically calculated based on Icon/Title address!")); break;
+    case 40: QMessageBox::information(nullptr, tr("NDSFactory"), tr("FAT files address is automatically calculated based on Icon/Title address!")); break;
     default: return false;
     }
     Q_EMIT this->dataChanged(index, index);

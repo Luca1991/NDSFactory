@@ -2,6 +2,7 @@
 #include <QMessageBox>
 #include "./../../mainwindow.h"
 #include "./../../ui_mainwindow.h"
+#include "./../../utils/filepicker.h"
 
 void MainWindow::on_fatExtractorLoadFatDataBtn_clicked()
 {
@@ -47,6 +48,8 @@ void MainWindow::on_fatExtractorLoadFntBtn_clicked()
 
 void MainWindow::on_fatExtractorExtractBtn_clicked()
 {
+	ui->fatExtractorExtractBtn->setEnabled(false);
+
     QString dirPath = QFileDialog::getExistingDirectory(
         this, tr("Select Directory"),
         "",
@@ -58,8 +61,10 @@ void MainWindow::on_fatExtractorExtractBtn_clicked()
             ui->fatExtractorFntPathEdt->text().toStdString(),
             ui->fatExtractorOriginalFatFilesAddrEdt->text().toUInt(nullptr, 16),
             dirPath.toStdString(),
-            ui->fatExtractorSaveFileIDsCbx->isChecked()) ? QMessageBox::information(this, tr("NDS Factory"), tr("FAT files extraction completed!"))
-        : QMessageBox::critical(this, tr("NDS Factory"), tr("Error extracting FAT files!"));
+            ui->fatExtractorSaveFileIDsCbx->isChecked()) ? QMessageBox::information(this, tr("NDSFactory"), tr("FAT files extraction completed!"))
+        : QMessageBox::critical(this, tr("NDSFactory"), tr("Error extracting FAT files!"));
+
+    ui->fatExtractorExtractBtn->setEnabled(true);
 
 }
 
@@ -71,38 +76,33 @@ void MainWindow::on_fatPatcherLoadFatBtn_clicked()
           "",
           "NDS Fat (*.bin)");
 
-    if( !fatPath.isNull() )
-    {
-      ui->fatPatcherFatPathEdt->setText(fatPath.toUtf8());
-    }
+    if(!fatPath.isNull())
+        ui->fatPatcherFatPathEdt->setText(fatPath.toUtf8());
 }
 
 void MainWindow::on_fatPatcherPatchFatBtn_clicked()
 {
+	ui->fatPatcherPatchFatBtn->setEnabled(false);
+
     uint32_t positionDiff = 0;
     uint32_t originalPos = ui->fatPatcherOriginalFatFilesAddrEdt->text().toUInt(nullptr, 16);
     uint32_t newPos = ui->fatPatcherNewFatFilesAddrEdt->text().toUInt(nullptr, 16);
 
-    QString dirPath =  QFileDialog::getSaveFileName(
-          Q_NULLPTR,
-          "NDS FAT",
-          "fat.bin",
-          "Binary (*.bin)");
+    QString dirPath = customSaveFileDialog("NDS FAT",
+        "fat.bin",
+        "Binary (*.bin)");
 
-    if(dirPath.isNull())
+    if (!dirPath.isNull())
     {
-        return;
+        if(originalPos < newPos)
+            positionDiff = newPos - originalPos;
+        else
+            positionDiff = originalPos - newPos;
+
+        patchFat(ui->fatPatcherFatPathEdt->text().toStdString(), positionDiff, dirPath.toStdString())
+            ? QMessageBox::information(this, tr("NDSFactory"), tr("FAT patching completed!"))
+            : QMessageBox::critical(this, tr("NDSFactory"), tr("Error patching FAT!"));
     }
 
-    if (originalPos < newPos)
-    {
-        positionDiff = newPos-originalPos;
-    } else {
-        positionDiff = originalPos-newPos;
-    }
-
-    patchFat(ui->fatPatcherFatPathEdt->text().toStdString(), positionDiff, dirPath.toStdString())
-            ? QMessageBox::information(this, tr("NDS Factory"), tr("FAT patching completed!"))
-            : QMessageBox::critical(this, tr("NDS Factory"), tr("Error patching FAT!"));
-
+    ui->fatPatcherPatchFatBtn->setEnabled(true);
 }

@@ -2,6 +2,7 @@
 #include <QMessageBox>
 #include "./../../mainwindow.h"
 #include "./../../ui_mainwindow.h"
+#include "./../../utils/filepicker.h"
 #include "../commons/headernames.h"
 
 
@@ -17,7 +18,7 @@ void MainWindow::on_packerLoadHeaderBtn_clicked()
 
     if(headerPath.isNull())
     {
-        QMessageBox::critical(this, tr("NDS Factory"), tr("Unable to open file!"));
+        QMessageBox::critical(this, tr("NDSFactory"), tr("Unable to open file!"));
         return;
     }
 
@@ -172,17 +173,17 @@ void MainWindow::on_packerLoadFatFilesBtn_clicked()
 
 void MainWindow::on_packerBuildNDSRomBtn_clicked()
 {
-    QString dirPath = QFileDialog::getSaveFileName(
-          Q_NULLPTR,
-          "NDS Rom",
-          "rom.nds",
-          "NDS ROM (*.nds)");
+	ui->packerBuildNDSRomBtn->setEnabled(false);
+
+    QString dirPath = customSaveFileDialog("NDS Rom",
+        "rom.nds",
+        "NDS ROM (*.nds)");
 
     if (!dirPath.isNull())
-    {
-        writeEverything(dirPath.toStdString()) ? QMessageBox::information(this, tr("NDS Factory"), tr("Creation completed!"))
-                                               : QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the creation!"));
-    }
+        writeEverything(dirPath.toStdString()) ? QMessageBox::information(this, tr("NDSFactory"), tr("Creation completed!"))
+                                               : QMessageBox::critical(this, tr("NDSFactory"), tr("Error during the creation!"));
+
+    ui->packerBuildNDSRomBtn->setEnabled(true);
 }
 
 void MainWindow::on_packerCalcHeaderCrcBtn_clicked()

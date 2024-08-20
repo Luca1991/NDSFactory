@@ -1,9 +1,8 @@
 #pragma once
 
-
 #include <QFileDialog>
 
-QString customSaveFileDialog(const QString& title, const QString& defaultName, const QString& filter)
+inline QString customSaveFileDialog(const QString& title, const QString& defaultName, const QString& filter)
 {
 
     static QString lastUsedPath;

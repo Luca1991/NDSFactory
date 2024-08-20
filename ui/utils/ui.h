@@ -6,10 +6,10 @@ void notifyExtractionResult(bool result)
 {
 	if (result)
 	{
-		QMessageBox::information(Q_NULLPTR, "NDS Factory", "Extraction completed!");
+		QMessageBox::information(Q_NULLPTR, "NDSFactory", "Extraction completed!");
 	}
 	else
 	{
-		QMessageBox::critical(Q_NULLPTR, "NDS Factory", "Error during the extraction!");
+		QMessageBox::critical(Q_NULLPTR, "NDSFactory", "Error during the extraction!");
 	}
 }

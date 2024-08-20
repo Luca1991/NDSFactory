@@ -42,7 +42,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>NDS Factory V1.2</string>
+    <string>NDSFactory V1.2</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignmentFlag::AlignCenter</set>
