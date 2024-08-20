@@ -4,6 +4,7 @@
 #include "./../../mainwindow.h"
 #include "./../../ui_mainwindow.h"
 #include "./../../utils/filepicker.h"
+#include "./../../utils/ui.h"
 
 
 void MainWindow::on_loadRomBtn_clicked()
@@ -136,16 +137,4 @@ void MainWindow::on_unpackerDumpEverythingBtn_clicked()
 
     if (!dirPath.isNull())
         notifyExtractionResult(dumpEverything(dirPath));
-}
-
-void MainWindow::notifyExtractionResult(bool result)
-{
-    if(result)
-	{
-		QMessageBox::information(this, tr("NDS Factory"), tr("Extraction completed!"));
-	}
-	else
-	{
-		QMessageBox::critical(this, tr("NDS Factory"), tr("Error during the extraction!"));
-	}
 }

@@ -78,7 +78,6 @@ private:
     bool dumpIconTitle(const std::string& dirPath);
     bool dumpFatFiles(const std::string& dirPath);
     bool dumpEverything(QString dirPath);
-    void notifyExtractionResult(bool result);
 
     void populatePackerSectionHeader(NDSHeader *ndsHeader);
     void enableCalcCrcButton();
