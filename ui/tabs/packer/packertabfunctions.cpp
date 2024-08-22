@@ -148,7 +148,10 @@ bool MainWindow::writeArm9BinPadding(char paddingType, const std::string& savePa
         size = extractPackerHeaderTableData(NDSHeaderNames::ARM7RomAddress).toUInt(nullptr, 16) - startAddr;
 
     if (isFooterPresent)
+    {
+        startAddr += Arm9FooterSize;
         size -= Arm9FooterSize;
+    }
 
     return ndsFactory.writePaddingToFile(
         paddingType,

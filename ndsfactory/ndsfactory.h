@@ -24,6 +24,7 @@ public:
     bool extractFatData(const std::string& fatDataSectionPath, const std::string& fatSectionPath,
         const std::string& fntSectionPath, uint32_t originalFatDataAddr, const std::string& savePath, bool logFileIDs);
     bool patchFat(const std::string& sectionPath, uint32_t shiftSize, const std::string& savePath);
+	bool buildFatData(const std::string& fatDataDirPath, const std::string& originalFatPath, uint32_t fatDataAddr, const std::string& savePath);
     uint16_t calcHeaderCrc16(const std::vector<char>& romHeader);
 
 private:

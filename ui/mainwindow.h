@@ -58,6 +58,9 @@ private slots:
     void on_fatExtractorLoadFatBtn_clicked();
     void on_fatExtractorLoadFntBtn_clicked();
     void on_fatExtractorExtractBtn_clicked();
+    void on_fatBuilderOpenFatDataDirBtn_clicked();
+	void on_fatBuilderLoadOriginalFatBtn_clicked();
+    void on_fatBuilderBuildBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -109,4 +112,5 @@ private:
     bool extractFatData(const std::string& fatDataSectionPath, const std::string& fatSectionPath,
         const std::string& fntSectionPath, uint32_t originalFatDataAddr, const std::string& savePath, bool logFileIDs);
     bool patchFat(const std::string& loadPath, uint32_t shiftSize, const std::string& savePath);
+	bool buildFatData(const std::string& fatDataDirPath, const std::string& originalFatPath, uint32_t fatDataAddr, const std::string& savePath);
 };

@@ -106,3 +106,45 @@ void MainWindow::on_fatPatcherPatchFatBtn_clicked()
 
     ui->fatPatcherPatchFatBtn->setEnabled(true);
 }
+
+void MainWindow::on_fatBuilderOpenFatDataDirBtn_clicked()
+{
+    QString fatDirPat = QFileDialog::getExistingDirectory(
+        this, tr("Select Directory"),
+        "",
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+    if (!fatDirPat.isNull())
+        ui->fatBuilderFatDirPathEdt->setText(fatDirPat.toUtf8());
+}
+
+void MainWindow::on_fatBuilderLoadOriginalFatBtn_clicked()
+{
+	QString fatPath = QFileDialog::getOpenFileName(
+		Q_NULLPTR,
+		"NDS Fat",
+		"",
+		"NDS Fat (*.bin)");
+
+	if (!fatPath.isNull())
+		ui->fatBuilderOriginalFatPathEdt->setText(fatPath.toUtf8());
+}
+
+void MainWindow::on_fatBuilderBuildBtn_clicked()
+{
+    ui->fatBuilderOpenFatDataDirBtn->setEnabled(false);
+
+    QString dirPath = QFileDialog::getExistingDirectory(
+        this, tr("Select Directory"),
+        "",
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+    if (!dirPath.isNull())
+        buildFatData(ui->fatBuilderFatDirPathEdt->text().toStdString(),
+			ui->fatBuilderOriginalFatPathEdt->text().toStdString(),
+            ui->fatBuilderFatAddrEdt->text().toUInt(nullptr, 16),
+            dirPath.toStdString()) ? QMessageBox::information(this, tr("NDSFactory"), tr("fat_data.bin and fat.bin correctly built!"))
+        : QMessageBox::critical(this, tr("NDSFactory"), tr("Error building FAT!"));
+
+    ui->fatBuilderOpenFatDataDirBtn->setEnabled(true);
+}

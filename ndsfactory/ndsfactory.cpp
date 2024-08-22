@@ -30,12 +30,11 @@ NDSFactory::NDSFactory()
 bool NDSFactory::loadRomHeader(const std::string& romPath, std::vector<char>& romHeader)
 {
     std::streampos headerSize = sizeof(NDSHeader);
-    std::ifstream romFile (romPath, std::ios::in|std::ios::binary|std::ios::ate);
+    std::ifstream romFile (romPath, std::ios::binary);
     if (romFile.is_open())
     {
         romHeader.resize(static_cast<unsigned long>(headerSize));
 
-        romFile.seekg (0, std::ios::beg);
         romFile.read (romHeader.data(), headerSize);
         romFile.close();
 
@@ -46,8 +45,8 @@ bool NDSFactory::loadRomHeader(const std::string& romPath, std::vector<char>& ro
 
 bool NDSFactory::dumpDataFromFile(const std::string& romPath, const std::string& savePath, uint32_t startAddr, uint32_t size)
 {
-    std::ifstream romFile (romPath, std::ios::in|std::ios::binary|std::ios::ate);
-    std::ofstream savedFile (savePath, std::ios::out|std::ios::binary|std::ios::ate);
+    std::ifstream romFile (romPath, std::ios::binary);
+    std::ofstream savedFile (savePath, std::ios::binary);
     if (romFile.is_open() && savedFile.is_open())
     {
         std::vector<char> dumpBuffer(size);
@@ -77,7 +76,7 @@ bool NDSFactory::logToFile(const std::string& logPath, const std::string& log)
 
 bool NDSFactory::readBytesFromFile(std::vector<char>& byteBuffer, const std::string& romPath, uint32_t startAddr, uint32_t size)
 {
-    std::ifstream romFile (romPath, std::ios::in|std::ios::binary|std::ios::ate);
+    std::ifstream romFile (romPath, std::ios::binary);
     if (romFile.is_open())
     {
         romFile.seekg (startAddr, std::ios::beg);
@@ -90,34 +89,36 @@ bool NDSFactory::readBytesFromFile(std::vector<char>& byteBuffer, const std::str
 
 bool NDSFactory::writeSectionToFile(const std::string& sectionPath, const std::string& savePath, uint32_t startAddr, uint32_t size)
 {
-    std::ifstream sectionFile (sectionPath, std::ios::in|std::ios::binary|std::ios::ate);
-    std::ofstream savedFile (savePath, std::ios::out|std::ios::binary|std::ios::app);
-    if (sectionFile.is_open() && savedFile.is_open())
+    std::ifstream sectionFile (sectionPath, std::ios::binary);
+    if (sectionFile.is_open())
     {
         std::vector<char> dumpBuffer(size);
-        sectionFile.seekg (0, std::ios::beg);
         sectionFile.read (dumpBuffer.data(), size);
         sectionFile.close();
-
-        savedFile.seekp(startAddr, std::ios::beg);
-        savedFile.write(dumpBuffer.data(), size);
-        savedFile.close();
-        return true;
+        return writeBytesToFile(dumpBuffer, savePath, startAddr, size);
     }
     return false;
 }
 
 bool NDSFactory::writeBytesToFile(std::vector<char>& byteBuffer, const std::string& savePath, uint32_t startAddr, uint32_t size)
 {
-    std::ofstream savedFile (savePath, std::ios::out|std::ios::binary|std::ios::app);
-    if (savedFile.is_open())
+    std::ofstream savedFile (savePath, std::ios::in | std::ios::out | std::ios::binary);
+    if (!savedFile.is_open())
     {
-        savedFile.seekp(startAddr, std::ios::beg);
-        savedFile.write(byteBuffer.data(), size);
+        savedFile.open(savePath, std::ios::out | std::ios::binary);
+        if (!savedFile.is_open()) {
+            return false;
+        }
         savedFile.close();
-        return true;
+        savedFile.open(savePath, std::ios::in | std::ios::out | std::ios::binary);
+        if (!savedFile.is_open())
+            return false;
     }
-    return false;
+
+    savedFile.seekp(startAddr);
+    savedFile.write(byteBuffer.data(), size);
+    savedFile.close();
+    return true;
 }
 
 
@@ -134,7 +135,7 @@ int NDSFactory::getCardSizeInBytes(int cardType)
 
 bool NDSFactory::checkArm9FooterPresence(const std::string& sectionPath, uint32_t size)
 {
-    std::ifstream sectionFile (sectionPath, std::ios::in|std::ios::binary|std::ios::ate);
+    std::ifstream sectionFile (sectionPath, std::ios::binary | std::ios::ate);
     if (sectionFile.is_open())
     {
         std::streamoff sectionRealSize = sectionFile.tellg();
@@ -307,7 +308,94 @@ bool NDSFactory::patchFat(const std::string& fatSectionPath, uint32_t shiftSize,
         pfatrange->endAddr += shiftSize;
     }
 
+    std::remove(savePath.c_str());
+
     return writeBytesToFile(fatBytes, savePath, 0, static_cast<uint32_t>(sectionSize));
+}
+
+bool NDSFactory::buildFatData(const std::string& fatDataDirPath, const std::string& originalFatPath, uint32_t fatDataAddr, const std::string& savePath)
+{
+    std::vector<char> fatDataBytes;
+    std::vector<FatRange> fat;
+    std::vector<char> fntBytes;
+
+    std::vector<FatFileID> fileIDs;
+    std::ifstream fileIDsFile(fatDataDirPath + "/_file_IDs.txt", std::ios::in | std::ios::beg);
+    if (!fileIDsFile.is_open()) return false;
+    std::string fileIDsLine;
+    while (std::getline(fileIDsFile, fileIDsLine))
+    {
+        FatFileID fatFileID;
+        fatFileID.id = static_cast<uint16_t>(std::stoi(fileIDsLine.substr(0, fileIDsLine.find(":::")), nullptr, 16));
+        fatFileID.path = fileIDsLine.substr(fileIDsLine.find(":::") + 3);
+        fileIDs.push_back(fatFileID);
+    }
+    fileIDsFile.close();
+
+    // This loop is needed to detect if roms has overlay files
+    // and if so, we need to extract their addresses from the original fat.bin
+    // it is a hacky but it works
+    for (FatFileID fatFileID : fileIDs)
+    {
+        std::string currentFile = fatDataDirPath + "/" + fatFileID.path;
+        if (std::filesystem::is_directory(std::filesystem::path(currentFile))) continue;
+
+        int firstFileId = fatFileID.id;
+        if (firstFileId > 0)
+        {
+            std::ifstream originalFatFile(originalFatPath, std::ios::in | std::ios::binary | std::ios::beg);
+            if (!originalFatFile.is_open()) return false;
+            std::vector<char> ovrBytes;
+            uint32_t requiredBytes = firstFileId * sizeof(FatRange);
+            ovrBytes.resize(requiredBytes);
+            originalFatFile.read(ovrBytes.data(), requiredBytes);
+            originalFatFile.close();
+
+            FatRange* pfatrange = reinterpret_cast<FatRange*>(ovrBytes.data());
+            for (size_t i = 0; i < ovrBytes.size(); i += sizeof(FatRange), pfatrange++)
+                fat.push_back({ pfatrange->startAddr, pfatrange->endAddr });
+        }
+        break;
+    }
+
+    for (FatFileID fatFileID : fileIDs)
+    {
+        std::string currentFile = fatDataDirPath + "/" + fatFileID.path;
+
+        if (std::filesystem::is_directory(std::filesystem::path(currentFile))) continue;
+
+        FatRange fatRange;
+        fatRange.startAddr = fatDataAddr + static_cast<uint32_t>(fatDataBytes.size());
+
+        std::ifstream currentFatDataFile(currentFile, std::ios::in | std::ios::binary | std::ios::ate);
+		if (!currentFatDataFile.is_open()) return false;
+        std::streamsize size = currentFatDataFile.tellg();
+        currentFatDataFile.seekg(0, std::ios::beg);
+
+        std::vector<char> buffer(size);
+        if (currentFatDataFile.read(buffer.data(), size))
+            fatDataBytes.insert(fatDataBytes.end(), buffer.begin(), buffer.end());
+        else
+        {
+			currentFatDataFile.close();
+			return false;
+        }
+        currentFatDataFile.close();
+
+        fatRange.endAddr = fatDataAddr + static_cast<uint32_t>(fatDataBytes.size());
+		fat.push_back(fatRange);
+    }
+
+   
+    const char* fat_ptr = reinterpret_cast<const char*>(fat.data());
+    std::vector<char> fatBytes(fat_ptr, fat_ptr + fat.size() * sizeof(FatRange));
+    std::remove((savePath + "/fat_data.bin").c_str());
+    std::remove((savePath + "/fat.bin").c_str());
+    bool res = true;
+    res &= writeBytesToFile(fatDataBytes, savePath + "/fat_data.bin", 0, static_cast<uint32_t>(fatDataBytes.size()));
+	res &= writeBytesToFile(fatBytes, savePath + "/fat.bin", 0, static_cast<uint32_t>(fatBytes.size()));
+    return res;
+
 }
 
 uint16_t NDSFactory::calcHeaderCrc16(const std::vector<char>& romHeader)

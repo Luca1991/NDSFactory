@@ -702,7 +702,7 @@
                <item>
                 <widget class="QCheckBox" name="fatExtractorSaveFileIDsCbx">
                  <property name="text">
-                  <string>Save file IDs to _file_IDs.txt (required for games that access files by their ID)</string>
+                  <string>Save file IDs to _file_IDs.txt (required for rebuilding FAT)</string>
                  </property>
                 </widget>
                </item>
@@ -726,6 +726,83 @@
                 <widget class="QPushButton" name="fatExtractorExtractBtn">
                  <property name="text">
                   <string>Extract FAT Data!</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_17">
+          <item>
+           <widget class="QGroupBox" name="groupBox_8">
+            <property name="title">
+             <string>FAT Builder</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_18">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_19">
+               <item>
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>Original fat.bin is required ONLY if the ROM has an overlay...</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_9">
+               <item>
+                <widget class="QLineEdit" name="fatBuilderFatDirPathEdt"/>
+               </item>
+               <item>
+                <widget class="QPushButton" name="fatBuilderOpenFatDataDirBtn">
+                 <property name="text">
+                  <string>Open FAT Data Directory</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_12">
+               <item>
+                <widget class="QLineEdit" name="fatBuilderOriginalFatPathEdt"/>
+               </item>
+               <item>
+                <widget class="QPushButton" name="fatBuilderLoadOriginalFatBtn">
+                 <property name="text">
+                  <string>Load Original fat.bin</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_11">
+               <item>
+                <widget class="QLabel" name="label_2">
+                 <property name="text">
+                  <string>Fat Files (fat_data.bin) Addr:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="fatBuilderFatAddrEdt"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_10">
+               <item>
+                <widget class="QPushButton" name="fatBuilderBuildBtn">
+                 <property name="text">
+                  <string>Build!</string>
                  </property>
                 </widget>
                </item>
