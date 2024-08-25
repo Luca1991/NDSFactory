@@ -39,8 +39,7 @@ void MainWindow::on_unpackerDumpHeaderBtn_clicked()
 
     QString dirPath = customSaveFileDialog("NDS Header", "header.bin", "Binary (*.bin)");
 
-    if (!dirPath.isNull())
-        notifyExtractionResult(dumpHeader(dirPath.toStdString()));
+    if (!dirPath.isNull()) notifyExtractionResult(dumpHeader(dirPath.toStdString()));
 
 	ui->unpackerDumpHeaderBtn->setEnabled(true);
 }
@@ -57,8 +56,7 @@ void MainWindow::on_unpackerDumpArm9Btn_clicked()
                 "Do you want to dump the extra 12 bytes? (click yes if you want a 1:1 arm9 dump)",
                 QMessageBox::Yes|QMessageBox::No);
 
-    if (!dirPath.isNull())
-        notifyExtractionResult(dumpArm9Bin(dirPath.toStdString(), dumpExtraBytes == QMessageBox::Yes ? true : false));
+    if (!dirPath.isNull()) notifyExtractionResult(dumpArm9Bin(dirPath.toStdString(), dumpExtraBytes == QMessageBox::Yes ? true : false));
 
 	ui->unpackerDumpArm9Btn->setEnabled(true);
 }
@@ -69,8 +67,7 @@ void MainWindow::on_unpackerDumpArm7Btn_clicked()
 
     QString dirPath = customSaveFileDialog("NDS ARM7", "arm7.bin", "Binary (*.bin)");
 
-    if (!dirPath.isNull())
-        notifyExtractionResult(dumpArm7Bin(dirPath.toStdString()));
+    if (!dirPath.isNull()) notifyExtractionResult(dumpArm7Bin(dirPath.toStdString()));
 
 	ui->unpackerDumpArm7Btn->setEnabled(true);
 }
@@ -81,8 +78,7 @@ void MainWindow::on_unpackerDumpFntBtn_clicked()
 
     QString dirPath = customSaveFileDialog("NDS FNT", "fnt.bin", "Binary (*.bin)");
 
-    if (!dirPath.isNull())
-        notifyExtractionResult(dumpFnt(dirPath.toStdString()));
+    if (!dirPath.isNull()) notifyExtractionResult(dumpFnt(dirPath.toStdString()));
 
 	ui->unpackerDumpFntBtn->setEnabled(true);
 }
@@ -93,8 +89,7 @@ void MainWindow::on_unpackerDumpFatBtn_clicked()
 
     QString dirPath = customSaveFileDialog("NDS FAT", "fat.bin", "Binary (*.bin)");
 
-    if (!dirPath.isNull())
-        notifyExtractionResult(dumpFat(dirPath.toStdString()));
+    if (!dirPath.isNull()) notifyExtractionResult(dumpFat(dirPath.toStdString()));
 
 	ui->unpackerDumpFatBtn->setEnabled(true);
 }
@@ -105,8 +100,7 @@ void MainWindow::on_unpackerDumpArm9OverlayBtn_clicked()
 
     QString dirPath = customSaveFileDialog("NDS ARM9 Overlay", "a9ovr.bin", "Binary (*.bin)");
 
-    if (!dirPath.isNull())
-        notifyExtractionResult(dumpArm9Overlay(dirPath.toStdString()));
+    if (!dirPath.isNull()) notifyExtractionResult(dumpArm9Overlay(dirPath.toStdString()));
 
 	ui->unpackerDumpArm9OverlayBtn->setEnabled(true);
 }
@@ -117,8 +111,7 @@ void MainWindow::on_unpackerDumpArm7OverlayBtn_clicked()
 
     QString dirPath = customSaveFileDialog("NDS ARM7 Overlay", "a7ovr.bin", "Binary (*.bin)");
 
-    if (!dirPath.isNull())
-        notifyExtractionResult(dumpArm7Overlay(dirPath.toStdString()));
+    if (!dirPath.isNull()) notifyExtractionResult(dumpArm7Overlay(dirPath.toStdString()));
 
 	ui->unpackerDumpArm7OverlayBtn->setEnabled(true);
 }
@@ -129,8 +122,7 @@ void MainWindow::on_unpackerDumpIconTitleLogoBtn_clicked()
 
     QString dirPath = customSaveFileDialog("NDS IconTitleLogo", "itl.bin", "Binary (*.bin)");
 
-    if (!dirPath.isNull())
-        notifyExtractionResult(dumpIconTitle(dirPath.toStdString()));
+    if (!dirPath.isNull()) notifyExtractionResult(dumpIconTitle(dirPath.toStdString()));
 
 	ui->unpackerDumpIconTitleLogoBtn->setEnabled(true);
 }
@@ -141,8 +133,7 @@ void MainWindow::on_unpackerDumpFatFilesBtn_clicked()
 
     QString dirPath = customSaveFileDialog("NDS FAT Files", "fat_data.bin", "Binary (*.bin)");
 
-    if (!dirPath.isNull())
-        notifyExtractionResult(dumpFatFiles(dirPath.toStdString()));
+    if (!dirPath.isNull()) notifyExtractionResult(dumpFatFiles(dirPath.toStdString()));
 
 	ui->unpackerDumpFatFilesBtn->setEnabled(true);
 }
@@ -153,8 +144,7 @@ void MainWindow::on_unpackerDumpArm9OverlayFilesBtn_clicked()
 
     QString dirPath = customSaveFileDialog("NDS ARM9 Overlay Data", "a9ovr_data.bin", "Binary (*.bin)");
 
-	if (!dirPath.isNull())
-		notifyExtractionResult(dumpArm9OverlayFiles(dirPath.toStdString()));
+	if (!dirPath.isNull()) notifyExtractionResult(dumpArm9OverlayFiles(dirPath.toStdString()));
 
 	ui->unpackerDumpArm9OverlayFilesBtn->setEnabled(true);
 }

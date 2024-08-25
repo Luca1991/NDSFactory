@@ -55,8 +55,7 @@ NFResult NDSFactory::dumpDataFromFile(const std::string& romPath, const std::str
 bool NDSFactory::logToFile(const std::string& logPath, const std::string& log)
 {
     std::ofstream savedFile(logPath, std::ios::out | std::ios::binary | std::ios::app);
-    if (!savedFile.is_open())
-        return false;
+    if (!savedFile.is_open()) return false;
 
 	savedFile.write(log.c_str(), log.size());
     savedFile.close();
@@ -308,7 +307,7 @@ NFResult NDSFactory::buildFatData(const std::string& fatDataDirPath, const std::
     std::vector<char> fntBytes;
 
     std::vector<FatFileID> fileIDs;
-    std::ifstream fileIDsFile(fatDataDirPath + "/_file_IDs.txt", std::ios::in | std::ios::beg);
+    std::ifstream fileIDsFile(fatDataDirPath + "/_file_IDs.txt", std::ios::in);
     if (!fileIDsFile.is_open()) return { false, "Error opening file: " + fatDataDirPath + "/_file_IDs.txt" };
     std::string fileIDsLine;
     while (std::getline(fileIDsFile, fileIDsLine))
@@ -331,7 +330,7 @@ NFResult NDSFactory::buildFatData(const std::string& fatDataDirPath, const std::
         int firstFileId = fatFileID.id;
         if (firstFileId > 0)
         {
-            std::ifstream originalFatFile(originalFatPath, std::ios::in | std::ios::binary | std::ios::beg);
+            std::ifstream originalFatFile(originalFatPath, std::ios::in | std::ios::binary);
             if (!originalFatFile.is_open()) return { false, "Error opening file: " + originalFatPath };
             std::vector<char> ovrBytes;
             uint32_t requiredBytes = firstFileId * sizeof(FatRange);
