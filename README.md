@@ -52,6 +52,7 @@ In this tab, you can:
 * extract the FAT files from fat_data.bin.
 * rebuild the FAT files into a new fat.bin and fat_data.bin.
   If the ROM contains ARM9/ARM7 overlays you must provide the original fat.bin to extract the overlay offsets.
+  
   WARNING: DO NOT MODIFY FAT FILES NAMES OR EXTENSIONS, OR YOU WILL NEED A NEW fnt.bin.
 * patch the FAT section (fat.bin): this is only necessary if the FAT files' final address (fat_data.bin) differs from the original.
   Patching the FAT is straightforward: load your fat.bin, and fill in the original and new addresses of fat_data.bin. This will produce a patched fat.bin for use in the packing process.
@@ -60,5 +61,6 @@ In this tab, you can:
 
 If you find a bug, feel free to open an issue or submit a pull request :)
 
-## Developed with ❤ by Luca D'Amico
-## Special thanks to Antonio Barba & Davide Trogu
+Special thanks to [Antonio Barba](https://github.com/antoniobarba) & [Davide Trogu](https://github.com/Dax89)
+
+Developed with ❤ by Luca D'Amico
