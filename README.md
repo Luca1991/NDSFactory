@@ -39,18 +39,26 @@ In the Unpacker Tab, you can load your Nintendo DS software (.nds) and extract t
 **You can then do what you want with these sections (inject code, apply patches etc.)**
 
 ## Packer Tab
-In the Packer Tab, you can recreate a .nds file using your edited sections. If your sections are larger than the originals, you must update their addresses and sizes in the header. Ensure that the addresses do not overlap, or the final ROM will be broken. If you repack edited sections and the FAT files' address is different from the original, you must patch the FAT (fat.bin). The FAT contains absolute addresses representing each file's start and end addresses, so you need to update them accordingly (use the FAT Patching Tab for this).
+In the Packer Tab, you can recreate a .nds file using your edited sections.
+If your sections are larger than the originals, you must update their addresses and sizes in the header.
+Ensure that the addresses do not overlap, or the final ROM will be broken.
+If you repack edited sections and the FAT files' address is different from the original, you must patch the FAT (fat.bin).
+The FAT contains absolute addresses representing each file's start and end addresses, so you need to update them accordingly (use the FAT Patching Tab for this).
+
+WARNING: if the ROM contains ARM9/ARM7 overlays and your sections are larger than the original, you must manually update the overlay offsets in the ovr and fat binaries (using an hex editor).
 
 ## Fat Tools Tab
 In this tab, you can:
 * extract the FAT files from fat_data.bin.
-* patch the FAT section (fat.bin): this is only necessary if the FAT files' final address (fat_data.bin) differs from the original. Patching the FAT is straightforward: load your fat.bin, and fill in the original and new addresses of fat_data.bin. This will produce a patched fat.bin for use in the packing process.
+* rebuild the FAT files into a new fat.bin and fat_data.bin.
+  If the ROM contains ARM9/ARM7 overlays you must provide the original fat.bin to extract the overlay offsets.
+  WARNING: DO NOT MODIFY FAT FILES NAMES OR EXTENSIONS, OR YOU WILL NEED A NEW fnt.bin.
+* patch the FAT section (fat.bin): this is only necessary if the FAT files' final address (fat_data.bin) differs from the original.
+  Patching the FAT is straightforward: load your fat.bin, and fill in the original and new addresses of fat_data.bin. This will produce a patched fat.bin for use in the packing process.
 
-# Known Limitations/Possible Future Features/Bugs
-
-* Add support to rebuild a new fat_data.bin and fat.bin from a set of files inside a directory.
+# Credits
 
 If you find a bug, feel free to open an issue or submit a pull request :)
 
-### Developed with ❤ by Luca D'Amico
-### Special thanks to Antonio Barba & Davide Trogu
+## Developed with ❤ by Luca D'Amico
+## Special thanks to Antonio Barba & Davide Trogu
