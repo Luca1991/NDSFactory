@@ -1,6 +1,6 @@
 #ifndef REVISION_H
 #define REVISION_H
 
-#define GIT_COMMIT_HASH "8f755e4"
+#define GIT_COMMIT_HASH "dec5243"
 
 #endif
