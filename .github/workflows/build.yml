@@ -15,7 +15,7 @@ jobs:
     - name: Create Build Environment
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential libgl1-mesa-dev and libglvnd-dev cmake qt6-base-dev
+        sudo apt-get install -y build-essential libgl1-mesa-dev and libglvnd-dev cmake qt6-base-dev libfmt-dev
         mkdir build
   
     - name: Configure CMake
