@@ -17,12 +17,11 @@ void MainWindow::on_loadRomBtn_clicked()
           QDir::currentPath(),
           "NDS Rom (*.nds)");
 
-    if( !romPath.isNull() )
-    {
-      ui->loadedRomPath->setText(romPath.toUtf8());
-    }
+    if (romPath.isNull()) return;
 
-    if (ndsFactory.loadRomHeader(ui->loadedRomPath->text().toStdString(), romHeader))
+    ui->loadedRomPath->setText(romPath.toUtf8());
+
+    if (ndsFactory.loadRomHeader(ui->loadedRomPath->text().toStdString(), romHeader).result)
     {
         pNDSHeader = reinterpret_cast<NDSHeader*>(romHeader.data());
         populateHeader(pNDSHeader);

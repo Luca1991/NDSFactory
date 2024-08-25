@@ -55,14 +55,16 @@ void MainWindow::on_fatExtractorExtractBtn_clicked()
         "",
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-    if (!dirPath.isNull())
-        extractFatData(ui->fatExtractorFatDataPathEdt->text().toStdString(),
+    if (!dirPath.isNull()) {
+        NFResult nfResult = extractFatData(ui->fatExtractorFatDataPathEdt->text().toStdString(),
             ui->fatExtractorFatPathEdt->text().toStdString(),
             ui->fatExtractorFntPathEdt->text().toStdString(),
             ui->fatExtractorOriginalFatFilesAddrEdt->text().toUInt(nullptr, 16),
             dirPath.toStdString(),
-            ui->fatExtractorSaveFileIDsCbx->isChecked()) ? QMessageBox::information(this, tr("NDSFactory"), tr("FAT files extraction completed!"))
-        : QMessageBox::critical(this, tr("NDSFactory"), tr("Error extracting FAT files!"));
+            ui->fatExtractorSaveFileIDsCbx->isChecked());
+        nfResult.result? QMessageBox::information(this, tr("NDSFactory"), tr("FAT files extraction completed!"))
+            : QMessageBox::critical(this, tr("NDSFactory"), nfResult.message.c_str());
+    }
 
     ui->fatExtractorExtractBtn->setEnabled(true);
 
@@ -99,9 +101,9 @@ void MainWindow::on_fatPatcherPatchFatBtn_clicked()
         else
             positionDiff = originalPos - newPos;
 
-        patchFat(ui->fatPatcherFatPathEdt->text().toStdString(), positionDiff, dirPath.toStdString())
-            ? QMessageBox::information(this, tr("NDSFactory"), tr("FAT patching completed!"))
-            : QMessageBox::critical(this, tr("NDSFactory"), tr("Error patching FAT!"));
+        NFResult nfResult = patchFat(ui->fatPatcherFatPathEdt->text().toStdString(), positionDiff, dirPath.toStdString());
+        nfResult.result ? QMessageBox::information(this, tr("NDSFactory"), tr("FAT patching completed!"))
+            : QMessageBox::critical(this, tr("NDSFactory"), nfResult.message.c_str());
     }
 
     ui->fatPatcherPatchFatBtn->setEnabled(true);
@@ -140,11 +142,14 @@ void MainWindow::on_fatBuilderBuildBtn_clicked()
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     if (!dirPath.isNull())
-        buildFatData(ui->fatBuilderFatDirPathEdt->text().toStdString(),
-			ui->fatBuilderOriginalFatPathEdt->text().toStdString(),
+    {
+        NFResult nfResult = buildFatData(ui->fatBuilderFatDirPathEdt->text().toStdString(),
+            ui->fatBuilderOriginalFatPathEdt->text().toStdString(),
             ui->fatBuilderFatAddrEdt->text().toUInt(nullptr, 16),
-            dirPath.toStdString()) ? QMessageBox::information(this, tr("NDSFactory"), tr("fat_data.bin and fat.bin correctly built!"))
-        : QMessageBox::critical(this, tr("NDSFactory"), tr("Error building FAT!"));
+            dirPath.toStdString());
+        nfResult.result? QMessageBox::information(this, tr("NDSFactory"), tr("fat_data.bin and fat.bin correctly built!"))
+            : QMessageBox::critical(this, tr("NDSFactory"), nfResult.message.c_str());
+    }
 
     ui->fatBuilderOpenFatDataDirBtn->setEnabled(true);
 }

@@ -16,13 +16,9 @@ void MainWindow::on_packerLoadHeaderBtn_clicked()
           QDir::currentPath(),
           "NDS Header (*.bin)");
 
-    if(headerPath.isNull())
-    {
-        QMessageBox::critical(this, tr("NDSFactory"), tr("Unable to open file!"));
-        return;
-    }
+    if (headerPath.isNull()) return;
 
-    if (ndsFactory.loadRomHeader(headerPath.toStdString(), romHeader))
+    if (ndsFactory.loadRomHeader(headerPath.toStdString(), romHeader).result)
     {
         pNDSHeader = reinterpret_cast<NDSHeader*>(romHeader.data());
         populatePackerSectionHeader(pNDSHeader);
@@ -180,9 +176,11 @@ void MainWindow::on_packerBuildNDSRomBtn_clicked()
         "NDS ROM (*.nds)");
 
     if (!dirPath.isNull())
-        writeEverything(dirPath.toStdString()) ? QMessageBox::information(this, tr("NDSFactory"), tr("Creation completed!"))
-                                               : QMessageBox::critical(this, tr("NDSFactory"), tr("Error during the creation!"));
-
+    {
+        NFResult nfResult = writeEverything(dirPath.toStdString());
+        nfResult.result? QMessageBox::information(this, tr("NDSFactory"), tr("Creation completed!"))
+            : QMessageBox::critical(this, tr("NDSFactory"), nfResult.message.c_str());
+    }
     ui->packerBuildNDSRomBtn->setEnabled(true);
 }
 

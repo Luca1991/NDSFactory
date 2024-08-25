@@ -51,7 +51,7 @@ void MainWindow::disableExtractionButtons()
     ui->unpackerExtraGbx->setEnabled(false);
 }
 
-bool MainWindow::dumpHeader(const std::string& dirPath)
+NFResult MainWindow::dumpHeader(const std::string& dirPath)
 {
     return ndsFactory.dumpDataFromFile(
                 ui->loadedRomPath->text().toStdString(),
@@ -60,7 +60,7 @@ bool MainWindow::dumpHeader(const std::string& dirPath)
                 ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::HeaderSize, 1).data().toString().toUInt(nullptr,16));
 }
 
-bool MainWindow::dumpArm9Bin(const std::string& dirPath, bool dumpExtraBytes)
+NFResult MainWindow::dumpArm9Bin(const std::string& dirPath, bool dumpExtraBytes)
 {
     uint32_t size = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM9Size, 1).data().toString().toUInt(nullptr,16);
     if (dumpExtraBytes)
@@ -72,7 +72,7 @@ bool MainWindow::dumpArm9Bin(const std::string& dirPath, bool dumpExtraBytes)
                 size);
 }
 
-bool MainWindow::dumpArm7Bin(const std::string& dirPath)
+NFResult MainWindow::dumpArm7Bin(const std::string& dirPath)
 {
     return ndsFactory.dumpDataFromFile(
                 ui->loadedRomPath->text().toStdString(),
@@ -81,7 +81,7 @@ bool MainWindow::dumpArm7Bin(const std::string& dirPath)
                 ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7Size, 1).data().toString().toUInt(nullptr,16));
 }
 
-bool MainWindow::dumpFnt(const std::string& dirPath)
+NFResult MainWindow::dumpFnt(const std::string& dirPath)
 {
     return ndsFactory.dumpDataFromFile(
                 ui->loadedRomPath->text().toStdString(),
@@ -90,7 +90,7 @@ bool MainWindow::dumpFnt(const std::string& dirPath)
                 ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::FilenameTableSize, 1).data().toString().toUInt(nullptr,16));
 }
 
-bool MainWindow::dumpFat(const std::string& dirPath)
+NFResult MainWindow::dumpFat(const std::string& dirPath)
 {
     return ndsFactory.dumpDataFromFile(
                 ui->loadedRomPath->text().toStdString(),
@@ -99,7 +99,7 @@ bool MainWindow::dumpFat(const std::string& dirPath)
                 ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::FATSize, 1).data().toString().toUInt(nullptr,16));
 }
 
-bool MainWindow::dumpArm9Overlay(const std::string& dirPath)
+NFResult MainWindow::dumpArm9Overlay(const std::string& dirPath)
 {
     return ndsFactory.dumpDataFromFile(
                 ui->loadedRomPath->text().toStdString(),
@@ -108,7 +108,7 @@ bool MainWindow::dumpArm9Overlay(const std::string& dirPath)
                 ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM9OverlaySize, 1).data().toString().toUInt(nullptr,16));
 }
 
-bool MainWindow::dumpArm9OverlayFiles(const std::string& dirPath)
+NFResult MainWindow::dumpArm9OverlayFiles(const std::string& dirPath)
 {
     uint32_t startAddr = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM9OverlayAddress, 1).data().toString().toUInt(nullptr, 16) +
         ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM9OverlaySize, 1).data().toString().toUInt(nullptr, 16);
@@ -121,7 +121,7 @@ bool MainWindow::dumpArm9OverlayFiles(const std::string& dirPath)
         size);
 }
 
-bool MainWindow::dumpArm7Overlay(const std::string& dirPath)
+NFResult MainWindow::dumpArm7Overlay(const std::string& dirPath)
 {
     return ndsFactory.dumpDataFromFile(
                 ui->loadedRomPath->text().toStdString(),
@@ -130,7 +130,7 @@ bool MainWindow::dumpArm7Overlay(const std::string& dirPath)
                 ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7OverlaySize, 1).data().toString().toUInt(nullptr,16));
 }
 
-bool MainWindow::dumpArm7OverlayFiles(const std::string& dirPath)
+NFResult MainWindow::dumpArm7OverlayFiles(const std::string& dirPath)
 {
     uint32_t startAddr = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7OverlayAddress, 1).data().toString().toUInt(nullptr, 16) +
         ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7OverlaySize, 1).data().toString().toUInt(nullptr, 16);
@@ -143,7 +143,7 @@ bool MainWindow::dumpArm7OverlayFiles(const std::string& dirPath)
         size);
 }
 
-bool MainWindow::dumpIconTitle(const std::string& dirPath)
+NFResult MainWindow::dumpIconTitle(const std::string& dirPath)
 {
     return ndsFactory.dumpDataFromFile(
                 ui->loadedRomPath->text().toStdString(),
@@ -152,7 +152,7 @@ bool MainWindow::dumpIconTitle(const std::string& dirPath)
                 ICON_TITLE_SIZE);
 }
 
-bool MainWindow::dumpFatFiles(const std::string& dirPath)
+NFResult MainWindow::dumpFatFiles(const std::string& dirPath)
 {
     uint32_t startAddr = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::IconTitleAddress, 1).data().toString().toUInt(nullptr,16) + IconTitleSize ;
     uint32_t size = ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::UsedRomSize, 1).data().toString().toUInt(nullptr,16) - startAddr;
@@ -165,23 +165,34 @@ bool MainWindow::dumpFatFiles(const std::string& dirPath)
 }
 
 
-bool MainWindow::dumpEverything(QString dirPath)
+NFResult MainWindow::dumpEverything(QString dirPath)
 {
-    bool result = true;
-    result &= dumpHeader(QDir::toNativeSeparators(dirPath+"/header.bin").toStdString());
-    result &= dumpArm9Bin(QDir::toNativeSeparators(dirPath+"/arm9.bin").toStdString(), true);
-    result &= dumpArm7Bin(QDir::toNativeSeparators(dirPath+"/arm7.bin").toStdString());
-    result &= dumpFnt(QDir::toNativeSeparators(dirPath+"/fnt.bin").toStdString());
-    result &= dumpFat(QDir::toNativeSeparators(dirPath+"/fat.bin").toStdString());
+    NFResult nfResult;
+    nfResult = dumpHeader(QDir::toNativeSeparators(dirPath + "/header.bin").toStdString());
+	if (!nfResult.result) return nfResult;
+    nfResult = dumpArm9Bin(QDir::toNativeSeparators(dirPath+"/arm9.bin").toStdString(), true);
+    if (!nfResult.result) return nfResult;
+    nfResult = dumpArm7Bin(QDir::toNativeSeparators(dirPath+"/arm7.bin").toStdString());
+    if (!nfResult.result) return nfResult;
+    nfResult = dumpFnt(QDir::toNativeSeparators(dirPath+"/fnt.bin").toStdString());
+    if (!nfResult.result) return nfResult;
+    nfResult = dumpFat(QDir::toNativeSeparators(dirPath+"/fat.bin").toStdString());
+    if (!nfResult.result) return nfResult;
     if(ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM9OverlayAddress, 1).data().toString().toUInt(nullptr,16) != 0) {
-		result &= dumpArm9Overlay(QDir::toNativeSeparators(dirPath+"/a9ovr.bin").toStdString());
-		result &= dumpArm9OverlayFiles(QDir::toNativeSeparators(dirPath+"/a9ovr_data.bin").toStdString());
+        nfResult = dumpArm9Overlay(QDir::toNativeSeparators(dirPath+"/a9ovr.bin").toStdString());
+        if (!nfResult.result) return nfResult;
+        nfResult = dumpArm9OverlayFiles(QDir::toNativeSeparators(dirPath+"/a9ovr_data.bin").toStdString());
+        if (!nfResult.result) return nfResult;
 	}
     if(ui->unpackerHeaderDataTable->model()->index(NDSHeaderNames::ARM7OverlayAddress, 1).data().toString().toUInt(nullptr,16) != 0) {
-        result &= dumpArm7Overlay(QDir::toNativeSeparators(dirPath+"/a7ovr.bin").toStdString());
-        result &= dumpArm7OverlayFiles(QDir::toNativeSeparators(dirPath+"/a7ovr_data.bin").toStdString());
-        }
-    result &= dumpIconTitle(QDir::toNativeSeparators(dirPath+"/itl.bin").toStdString());
-    result &= dumpFatFiles(QDir::toNativeSeparators(dirPath+"/fat_data.bin").toStdString());
-    return result;
+        nfResult = dumpArm7Overlay(QDir::toNativeSeparators(dirPath+"/a7ovr.bin").toStdString());
+        if (!nfResult.result) return nfResult;
+        nfResult = dumpArm7OverlayFiles(QDir::toNativeSeparators(dirPath+"/a7ovr_data.bin").toStdString());
+        if (!nfResult.result) return nfResult;
+    }
+    nfResult = dumpIconTitle(QDir::toNativeSeparators(dirPath+"/itl.bin").toStdString());
+    if (!nfResult.result) return nfResult;
+    nfResult = dumpFatFiles(QDir::toNativeSeparators(dirPath+"/fat_data.bin").toStdString());
+    if (!nfResult.result) return nfResult;
+	return { true, "" };
 }

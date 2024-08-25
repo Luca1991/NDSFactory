@@ -1,15 +1,16 @@
 #pragma once
 
 #include <QMessageBox>
+#include "../../ndsfactory/nfresult.h"
 
-void notifyExtractionResult(bool result)
+void notifyExtractionResult(NFResult nfResult)
 {
-	if (result)
+	if (nfResult.result)
 	{
 		QMessageBox::information(Q_NULLPTR, "NDSFactory", "Extraction completed!");
 	}
 	else
 	{
-		QMessageBox::critical(Q_NULLPTR, "NDSFactory", "Error during the extraction!");
+		QMessageBox::critical(Q_NULLPTR, "NDSFactory", nfResult.message.c_str());
 	}
 }
