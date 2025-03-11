@@ -95,7 +95,7 @@ jobs:
         working-directory: ${{ github.workspace }}/build/universal
         shell: bash
         run: |
-          macdeployqt NDSFactory.app -verbose=1 -dmg
+          macdeployqt NDSFactory.app -verbose=1
 
       - name: Archive Artifact
         working-directory: ${{ github.workspace }}/build/universal
