@@ -42,7 +42,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>NDSFactory V1.3.1</string>
+    <string>NDSFactory V1.3.2</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -58,7 +58,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>(C) 2019-2024 - Luca D'Amico</string>
+    <string>(C) 2019-2025 - Luca D'Amico</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignmentFlag::AlignCenter</set>
