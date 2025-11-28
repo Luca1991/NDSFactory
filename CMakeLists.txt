@@ -73,6 +73,7 @@ set(FORMS
 # Platform-specific executable creation
 if(APPLE)
     set(MACOSX_BUNDLE_ICON_FILE ndsfactory.icns)
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER dev.lucadamico.ndsfactory)
     set(MACOS_ICNS "res/ndsfactory.icns")
     set_source_files_properties(${MACOS_ICNS} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
     add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${FORMS} ${MACOS_ICNS})
